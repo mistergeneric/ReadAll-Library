@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="1580.0" y="1829.0">com.library.repository.ItemRepository</node>
+    <node x="972.0" y="1637.0">com.library.domain.security.Authority</node>
+    <node x="1043.5" y="1417.0">com.library.service.impl.ItemService</node>
+    <node x="1672.0" y="0.0">com.library.domain.security.UserRole</node>
+    <node x="419.0" y="1637.0">com.library.repository.PasswordResetTokenRepository</node>
+    <node x="734.5" y="1417.0">com.library.service.impl.LoanService</node>
+    <node x="1318.0" y="1829.0">com.library.repository.RoleRepository</node>
+    <node x="0.0" y="0.0">com.library.domain.Book</node>
+    <node x="683.0" y="1517.0">com.library.service.impl.LoanServiceImpl</node>
+    <node x="51.5" y="1417.0">com.library.service.impl.LoanItemService</node>
+    <node x="1340.0" y="0.0">com.library.domain.security.PasswordResetToken</node>
+    <node x="1295.0" y="1417.0">com.library.domain.config.SecurityConfig</node>
+    <node x="803.0" y="220.0">com.library.service.impl.UserServiceImpl</node>
+    <node x="1769.0" y="1829.0">com.library.repository.BookRepository</node>
+    <node x="1394.0" y="1205.0">com.library.service.impl.ReservationServiceImpl</node>
+    <node x="522.0" y="1105.0">com.library.domain.Loan</node>
+    <node x="1026.0" y="1829.0">com.library.repository.UserRepository</node>
+    <node x="0.0" y="1829.0">com.library.utility.MailConstructor</node>
+    <node x="0.0" y="1637.0">com.library.controller.AdminController</node>
+    <node x="1608.0" y="1637.0">com.library.LibraryApplication</node>
+    <node x="990.0" y="1517.0">com.library.service.impl.ItemServiceImpl</node>
+    <node x="1446.0" y="1105.0">com.library.service.impl.ReservationService</node>
+    <node x="839.5" y="0.0">com.library.service.impl.UserService</node>
+    <node x="369.0" y="1517.0">com.library.service.impl.BookServiceImpl</node>
+    <node x="653.0" y="1829.0">com.library.service.impl.UserSecurityService</node>
+    <node x="0.0" y="1517.0">com.library.service.impl.LoanItemServiceImpl</node>
+    <node x="1208.0" y="1637.0">com.library.utility.SecurityUtility</node>
+    <node x="1756.0" y="1417.0">com.library.domain.Item</node>
+    <node x="0.0" y="1105.0">com.library.controller.HomeController</node>
+    <node x="323.0" y="0.0">com.library.domain.User</node>
+    <node x="1119.0" y="1105.0">com.library.domain.Reservation</node>
+    <node x="796.0" y="1105.0">com.library.domain.security.Role</node>
+    <node x="422.0" y="1417.0">com.library.service.impl.BookService</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.library.service.impl.ItemServiceImpl" target="com.library.service.impl.ItemService">
+      <point x="0.0" y="-37.5" />
+      <point x="0.0" y="25.0" />
+    </edge>
+    <edge source="com.library.service.impl.BookServiceImpl" target="com.library.service.impl.BookService">
+      <point x="0.0" y="-37.5" />
+      <point x="0.0" y="25.0" />
+    </edge>
+    <edge source="com.library.service.impl.UserServiceImpl" target="com.library.service.impl.UserService">
+      <point x="0.0" y="-133.5" />
+      <point x="0.0" y="85.0" />
+    </edge>
+    <edge source="com.library.service.impl.LoanItemServiceImpl" target="com.library.service.impl.LoanItemService">
+      <point x="0.0" y="-37.5" />
+      <point x="0.0" y="25.0" />
+    </edge>
+    <edge source="com.library.service.impl.LoanServiceImpl" target="com.library.service.impl.LoanService">
+      <point x="0.0" y="-37.5" />
+      <point x="0.0" y="25.0" />
+    </edge>
+    <edge source="com.library.service.impl.ReservationServiceImpl" target="com.library.service.impl.ReservationService">
+      <point x="0.0" y="-37.5" />
+      <point x="0.0" y="25.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.4" x="816.5" y="1670.0" />
+  <SelectedNodes>
+    <node>com.library.repository.ItemRepository</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

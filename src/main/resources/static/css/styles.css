@@ -1,0 +1,22 @@
+body {
+    padding-bottom: 20px;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.box {
+    border: 2px solid darkred;
+}
+
+.font-caro{
+    color: #b21f2d;
+    font-family: "Helvetica Neue";
+    text-transform: uppercase;
+}
+
+body{
+    background-color: #4472ca
+
+}

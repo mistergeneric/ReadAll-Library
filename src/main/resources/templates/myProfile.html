@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header">
+
+</head>
+
+<body>
+<!--================ Start Header Menu Area =================-->
+<div th:replace="common/header :: navbar"></div>
+<!--================ End Header Menu Area =================-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-8"><h2 class="display-3" style="margin-top: 100px;"><span th:text="${#strings.toUpperCase(user.username)}"></span></h2></div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row" style="margin-top: 50px;">
+        <div class="col-md-9">
+            <ul class="nav nav-tabs">
+                <li class="nav-item" th:classappend="${classActiveEdit}? 'active' "> <a class="nav-link" href="#tab-1" data-toggle="tab"> <span
+                        style="color: blueviolet">Edit</span></a>
+                </li>
+                <li class="nav-item" th:classappend="${classActiveBorrowed}? 'active'"><a class="nav-link" href="#tab-2" data-toggle="tab"><span
+                        style="color: blueviolet">Books on Loan</span></a>
+                </li>
+                <li class="nav-item" th:classappend="${classActiveBilling}? 'active'"><a class="nav-link" href="#tab-3" data-toggle="tab"><span
+                        style="color: blueviolet">Billing and Payment Details</span></a>
+                </li>
+                <li class="nav-item" th:classappend="${classActiveShipping}? 'active'"><a class="nav-link" href="#tab-4" data-toggle="tab"><span
+                        style="color: blueviolet">Address and Shipping</span></a>
+                </li>
+
+            </ul>
+            <!--Tab Panels -->
+            <div class="tab-content">
+                <!-- Edit User Information -->
+                <div class="tab-pane fade collapse show" id="tab-1" th:classappend="${classActiveEdit}? 'in active' ">
+                    <div class="card-group">
+                        <div class="card" style="=border: none;">
+                            <div class="card-body" style="background-color: #ededed; margin-top: 20px;">
+                                <form th:action="@{/updateUserInfo}" method="post">
+                                    <input type="hidden" name="id" th:value="${user.id}">
+                                    <div class="bg-info" th:if="${updateUserInfo}">User info updated</div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="firstName">First Name</label>
+                                                <input type="text" class="form-control" id="firstName" name="firstName" th:value="${user.firstName}"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="lastName">Last Name</label>
+                                                <input type="text" class="form-control" id="lastName" name="lastName" th:value="${user.lastName}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="username">Username</label>
+                                        <input type="text" class="form-control" id="userName" name="username" th:value="${user.username}"/>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="currentPassword">Password</label>
+                                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" th:value="${currentPassword}"/>
+
+                                    </div>
+                                    <p style="color:darkblue" class="lead">Enter your current password to change the email address or password.</p>
+                                    <div class="form-group">
+                                        <label for="email">Email Address</label>
+                                        <input type="text" class="form-control" id="email" name="email" th:value="${user.email}"/>
+
+                                    </div>
+                                    <p style="color:darkblue" class="lead">Please enter a valid email address.</p>
+                                    <div class="form-group">
+                                        <label for="txtNewPassword">New Password</label>
+                                        <input type="password" class="form-control" id="txtNewPassword" name="newPassword" />
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txtConfirmPassword">Confirm Password</label>
+                                        <input type="password" class="form-control" id="txtConfirmPassword"  />
+
+                                    </div>
+                                    <p style="color:darkblue" class="lead">To change the current user password, you need to correctly enter the new password in both fields.
+                                        Please enter and confirm your new password.</p>
+
+                                    <button type="submit" class="btn btn-primary">Register</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <br>
+    </div>
+</div>
+<!--================ End Testimonial Area =================-->
+
+<div th:replace="common/header :: bottom-stuff"></div>
+<!--================ End footer Area  =================-->
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<div th:replace="common/header :: body-bottom-scripts"></div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header">
+
+</head>
+
+<body>
+<!--================ Start Header Menu Area =================-->
+<div th:replace="common/header :: navbar"></div>
+<!--================ End Header Menu Area =================-->
+<div class="container" style="padding-top:100px">
+    <h4 class="display-2">Browse Our Library...</h4>
+    <br/>
+    <hr/>
+   <div th:if="${emptyList}">
+       <h5 style="font-style: italic">Nothing found, please try a different search</h5>
+   </div>
+    <table border="0" id="bookList">
+        <thead>
+        <tr>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="book-item" data-th-each="book : ${bookList}">
+            <td>
+                <div th:if="${book != null}">
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <img alt="book cover" class="img-fluid shelf-book" th:src="@{/images/book/{img}(img=${book.bookRef}+ '.png')}"/>
+                        </div>
+                        <div class="col-md-9">
+                            <h4 th:text="${book.bookTitle}"></h4>
+                            <span th:text="'Date published: ' + ${book.publicationDate}"></span>
+                            <br/>
+                            <span th:text="'Author: ' + ${book.bookAuthor}"></span>
+                            <br/>
+                            <span th:text="'Format: ' + ${#strings.capitalize(book.format)}"></span>
+                            <br/>
+                            <span th:text="${book.noOfPages} + ' pages'"> </span>
+                            <br/>
+                            <span style="font-size:x-large; color:#db3208">Copies in stock:
+                                <span th:text="${book.stockLevel}"></span>
+                            </span>
+
+                            <p th:text="'Description: ' + ${#strings.abbreviate(book.description, 500)}"></p>
+                        </div>
+
+                    </div>
+                    <hr/>
+                    <br/>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!--================ End Testimonial Area =================-->
+
+<div th:replace="common/header :: bottom-stuff"></div>
+<!--================ End footer Area  =================-->
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<div th:replace="common/header :: body-bottom-scripts"></div>
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5 ">
+<head th:fragment="common-header">
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="img/favicon.png" type="image/png"/>
+    <title>ReadAll Library</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/flaticon.css"/>
+    <link rel="stylesheet" href="css/themify-icons.css"/>
+    <link rel="stylesheet" href="owl-carousel/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css"/>
+    <!-- main css -->
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+
+<body>
+<div th:fragment="navbar">
+    <header class="header_area">
+        <div class="main_menu">
+            <div class="search_input" id="search_input_box">
+                <div class="container">
+                    <form class="d-flex justify-content-between" method="" action="">
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="search_input"
+                                placeholder="Search Here"
+                        />
+                        <button type="submit" class="btn"></button>
+                        <span
+                                class="ti-close"
+                                id="close_search"
+                                title="Close Search"
+                        ></span>
+                    </form>
+                </div>
+            </div>
+
+
+<!--            <ul class="nav navbar-nav" ">-->
+<!--                <li th:classappend="${#strings.startsWith(view,'/home')? 'active' : ''}"><a href="#" th:href="@{/home}">Home</a></li>-->
+<!--            </ul>-->
+            <nav class="navbar navbar-expand-lg navbar-light" th:with="view=${#httpServletRequest.getServletPath()}">
+                <div class="container">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <a class="navbar-brand logo_h" href="index.html"
+                    ><img src="img/logo.png" alt=""
+                    /></a>
+                    <button
+                            class="navbar-toggler"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#navbarSupportedContent"
+                            aria-controls="navbarSupportedContent"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation"
+                    >
+                        <span class="icon-bar"></span> <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div
+                            class="collapse navbar-collapse offset"
+                            id="navbarSupportedContent"
+                    >
+                        <ul th:with="view=${#httpServletRequest.getServletPath()}" class="nav navbar-nav menu_nav ml-auto">
+                            <li th:classappend="${#strings.startsWith(view,'/home')? 'active' : ''}"  class="nav-item">
+                                <a class="nav-link" href="/">Home</a>
+                            </li>
+                            <li th:classappend="${#strings.startsWith(view,'/aboutus')? 'active' : ''}" class="nav-item">
+                                <a class="nav-link" th:href="@{/aboutus}">About</a>
+                            </li>
+                            <li class="nav-item submenu dropdown">
+                                <a
+                                        href="#"
+                                        class="nav-link dropdown-toggle"
+                                        data-toggle="dropdown"
+                                        role="button"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                >Library</a
+                                >
+                                <ul  th:with="view=${#httpServletRequest.getServletPath()}"  class="dropdown-menu">
+                                    <li class="nav-item" th:classappend="${#strings.startsWith(view,'/browse')? 'active' : ''}">
+                                        <a class="nav-link" th:href="@{/browse}">Browse</a>
+                                    </li>
+                                    <li class="nav-item" th:classappend="${#strings.startsWith(view,'/contactus')? 'active' : ''}">
+                                        <a class="nav-link" th:href="@{/browse}">Search</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li th:classappend="${#strings.startsWith(view,'/myAccount')? 'active' : ''}" class="nav-item submenu dropdown">
+                                <a
+                                        href="#"
+                                        class="nav-link dropdown-toggle"
+                                        data-toggle="dropdown"
+                                        role="button"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                >Account</a
+                                >
+                                <ul th:with="view=${#httpServletRequest.getServletPath()}"   class="dropdown-menu">
+                                    <li th:classappend="${#strings.startsWith(view,'/myAccount')? 'active' : ''}" class="nav-item">
+                                        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/registerDetails}"
+                                        >Register</a>
+                                    </li>
+                                    <li class="nav-item" th:classappend="${#strings.startsWith(view,'/myProfile')? 'active' : ''}" sec:authorize="hasRole('ROLE_USER')">
+                                        <a class="nav-link"  th:href="@{/myProfile}"
+                                        >My Profile</a>
+                                    </li>
+
+                                    <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN') or hasRole('ROLE_USER')">
+                                        <a class="nav-link"  th:href="@{/logout}"
+                                        >Logout</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li th:classappend="${#strings.startsWith(view,'/admin')? 'active' : ''}" sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item submenu dropdown">
+                                <a
+                                        href="#"
+                                        class="nav-link dropdown-toggle"
+                                        data-toggle="dropdown"
+                                        role="button"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                >Admin</a
+                                >
+                                <ul class="dropdown-menu">
+                                    <li class="nav-item">
+                                        <a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/admin}">Admin Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/add}">Add New Book</a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/bookList}">View Books</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/login}">Manage Users</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/contactus}">Contact</a>
+                            </li>
+                            <li class="nav-item">
+                                <a th:href="@{/}" class="nav-link search" id="search">
+                                    <i class="ti-search"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!--================ End Header Menu Area =================-->
+</div>
+
+<div th:fragment="bottom-stuff">
+    <!--================ Start footer Area  =================-->
+    <footer class="footer-area section_gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 col-md-6 single-footer-widget">
+                    <h4>Browse Our Library</h4>
+                    <ul>
+                        <li><a th:href="@{/browse}">Browse The Library</a></li>
+<!--                        <li><a href="#">Manage Reputation</a></li>-->
+<!--                        <li><a href="#">Power Tools</a></li>-->
+<!--                        <li><a href="#">Marketing Service</a></li>-->
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 single-footer-widget">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a sec:authorize="isAnonymous()" th:href="@{/login}">Login</a></li>
+                        <li><a th:href="@{/contactus}">Contact Us</a></li>
+<!--                        <li><a href="#">Investor Relations</a></li>-->
+<!--                        <li><a href="#">Terms of Service</a></li>-->
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 single-footer-widget">
+                    <h4>Find Out More</h4>
+                    <ul>
+                        <li><a th:href="@{/aboutus}">About Us</a></li>
+<!--                        <li><a href="#">Brand Assets</a></li>-->
+<!--                        <li><a href="#">Investor Relations</a></li>-->
+<!--                        <li><a href="#">Terms of Service</a></li>-->
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 single-footer-widget">
+                    <h4>Stuff For You</h4>
+                    <ul>
+                        <li><a th:href="@{/}">Guides</a></li>
+                        <li><a th:href="@{/}">Reference Material</a></li>
+                        <li><a th:href="@{/}">Blog</a></li>
+                        <li><a th:href="@{/}">Forum</a></li>
+                    </ul>
+                </div>
+<!--                <div class="col-lg-4 col-md-6 single-footer-widget">-->
+<!--                    <h4>Newsletter</h4>-->
+<!--                    <p>You can trust us. we only send promo offers,</p>-->
+<!--                    <div class="form-wrap" id="mc_embed_signup">-->
+<!--                        <form-->
+<!--                                target="_blank"-->
+<!--                                action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"-->
+<!--                                method="get"-->
+<!--                                class="form-inline"-->
+<!--                        >-->
+<!--                            <input-->
+<!--                                    class="form-control"-->
+<!--                                    name="EMAIL"-->
+<!--                                    placeholder="Your Email Address"-->
+<!--                                    onfocus="this.placeholder = ''"-->
+<!--                                    onblur="this.placeholder = 'Your Email Address'"-->
+<!--                                    required=""-->
+<!--                                    type="email"-->
+<!--                            />-->
+<!--                            <button class="click-btn btn btn-default">-->
+<!--                                <span>subscribe</span>-->
+<!--                            </button>-->
+<!--                            <div style="position: absolute; left: -5000px;">-->
+<!--                                <input-->
+<!--                                        name="b_36c4fd991d266f23781ded980_aefe40901a"-->
+<!--                                        tabindex="-1"-->
+<!--                                        value=""-->
+<!--                                        type="text"-->
+<!--                                />-->
+<!--                            </div>-->
+
+<!--                            <div class="info"></div>-->
+<!--                        </form>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="row footer-bottom d-flex justify-content-between">-->
+<!--                <p class="col-lg-8 col-sm-12 footer-text m-0 text-white">-->
+<!--                    &lt;!&ndash; Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. &ndash;&gt;-->
+<!--                    Copyright &copy;<script>document.write(new Date().getFullYear());</script>-->
+<!--                    All rights reserved | This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a-->
+<!--                        href="https://colorlib.com" target="_blank">Colorlib</a>-->
+<!--                    &lt;!&ndash; Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. &ndash;&gt;-->
+<!--                </p>-->
+<!--                <div class="col-lg-4 col-sm-12 footer-social">-->
+<!--                    <a href="#"><i class="ti-facebook"></i></a>-->
+<!--                    <a href="#"><i class="ti-twitter"></i></a>-->
+<!--                    <a href="#"><i class="ti-dribbble"></i></a>-->
+<!--                    <a href="#"><i class="ti-linkedin"></i></a>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+    </footer>
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<div th:fragment="body-bottom-scripts">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="vendors/nice-select/js/jquery.nice-select.min.js"></script>
+    <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+    <script src="js/owl-carousel-thumb.min.js"></script>
+    <script src="js/jquery.ajaxchimp.min.js"></script>
+    <script src="js/mail-script.js"></script>
+    <!--gmaps Js-->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+    <script src="js/gmaps.min.js"></script>
+    <script src="js/theme.js"></script>
+</div>
+</body>
+</html>
