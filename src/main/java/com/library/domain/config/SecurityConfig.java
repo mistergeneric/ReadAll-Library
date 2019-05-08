@@ -46,7 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/admin/bookList",
             "/browse",
             "/aboutus",
-            "contactus"
+            "/contactus",
+            "/bookDetail"
     };
 
     @Override

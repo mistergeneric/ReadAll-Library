@@ -11,6 +11,7 @@ import com.library.service.impl.UserService;
 import com.library.utility.MailConstructor;
 import com.library.utility.SecurityUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,8 +26,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
+import java.security.Principal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 //this is the home controller which returns the index page
 @Controller
@@ -201,5 +206,26 @@ public class HomeController {
 
         return "contactus";
     }
+
+    @RequestMapping("/bookDetail")
+    public String bookDetail(@PathParam("bookRef") int bookRef, Model model, Principal principal)
+    {
+        if(principal != null)
+        {
+            String username = principal.getName();
+            User user = userService.findByUsername(username);
+            model.addAttribute("user", user);
+        }
+
+        Book book = bookService.findOne(bookRef);
+
+
+        model.addAttribute("book", book);
+
+        return "bookDetail";
+
+    }
+
+
 
 }

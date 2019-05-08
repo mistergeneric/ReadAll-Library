@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="common/header :: common-header">
+
+</head>
+
+<body>
+<!--================ Start Header Menu Area =================-->
+<div th:replace="common/header :: navbar"></div>
+<!--================ End Header Menu Area =================-->
+<div class="container" style="padding-top:100px">
+
+    <form th:action="@{bookNow}" method="post">
+            <input hidden="hidden" th:field="*{book.bookRef}"/>
+            <div class="row" style="margin-top: 120px">
+                <div class="col-md-3">
+                    <a th:href="@{/browseLibrary}">Back to browse</a>
+                    <br/>
+
+                    <img class="img-fluid shelf-book" th:src="@{/images/book/{img}(img=${book.bookRef}+ '.png')}"/>
+                </div>
+                <div class="col-md-9">
+                    <h3 class="display-3" th:text="${book.bookTitle}">Book Title</h3>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <h5><strong>Book Author: <span th:text="${book.bookAuthor}"></span></strong></h5>
+                            <p><strong>Publisher: <span th:text="${book.publisher}"></span></strong></p>
+                            <p><strong>Publication Date: <span th:text="${book.publicationDate}"></span></strong></p>
+                            <p><strong>Language: <span th:text="${book.language}"></span></strong></p>
+                            <p><strong>Category: <span th:text="${book.category}"></span></strong></p>
+                            <p><strong>Type: <span th:text="${book.format}"></span></strong></p>
+                            <p><strong>Pages: <span th:text="${book.noOfPages}"></span></strong></p>
+                        </div>
+                    <div class="col-md-7">
+                        <div class="card" style="border-width: 5px; margin-top:20px;">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>Available in stock: <span style="color:#db3208" th:text ="${book.stockLevel}"></span></h4>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 sec:authorize="isAuthenticated()" style="color:green;" th:if="*{book.stockLevel&gt;0}">You can borrow this!</h4>
+                                        <h4 sec:authorize="isAuthenticated()" style="color:red" th:if="*{book.stockLevel==0}">There's none left of this book, please reserve a copy</h4>
+                                        <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-warning" style="color:black; border:1px solid black; padding: 10px 40px 10px 40px;">Borrow this book</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    </div>
+                    <hr/>
+                    <p th:text="${book.description}"></p>
+                </div>
+            </div>
+
+    </form>
+</div>
+
+<!--================ End Testimonial Area =================-->
+
+<div th:replace="common/header :: bottom-stuff"></div>
+<!--================ End footer Area  =================-->
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<div th:replace="common/header :: body-bottom-scripts"></div>
+</body>
+</html>
