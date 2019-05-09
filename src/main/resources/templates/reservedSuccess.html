@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header">
+
+
+</head>
+
+<body>
+<!--================ Start Header Menu Area =================-->
+<!--================ End Header Menu Area =================-->
+<div th:replace="common/header :: navbar"></div>
+
+<div></div>
+<div class="container">
+    <div class="row"><h1 class="center-block display-2" style="padding-left:10px; padding-top: 80px">Order Confirmation</h1>
+
+
+        <div class="row">
+            <p class="info-border"> Your book has been reserved for : </p>
+            <br/>
+            <br/>
+        </div>
+        <br/>
+    </div>
+
+    <div class="row">
+        <h3 th:text="${reservation.getReservedFor()}"></h3>
+        <br/>
+
+    </div>
+</div>
+
+
+
+<!--================ End Testimonial Area =================-->
+
+<div th:replace="common/header :: bottom-stuff"></div>
+<!--================ End footer Area  =================-->
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<div th:replace="common/header :: body-bottom-scripts"></div>
+</body>
+</html>

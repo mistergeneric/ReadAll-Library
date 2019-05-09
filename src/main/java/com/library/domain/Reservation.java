@@ -18,9 +18,9 @@ public class Reservation {
     @JoinColumn(name="user_id")
     private User reservedBy;
 
-    @ManyToOne
-    @JoinColumn(name="book_id")
-    private Book book;
+    @ManyToOne (cascade = {CascadeType.ALL})
+    @JoinColumn(name="item_id")
+    private Item Item;
 
     public User getReservedBy() {
         return reservedBy;
@@ -36,5 +36,21 @@ public class Reservation {
 
     public void setReservedFor(Date reservedFor) {
         this.reservedFor = reservedFor;
+    }
+
+    public com.library.domain.Item getItem() {
+        return Item;
+    }
+
+    public void setItem(com.library.domain.Item item) {
+        Item = item;
+    }
+
+    public int getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(int reservationId) {
+        this.reservationId = reservationId;
     }
 }

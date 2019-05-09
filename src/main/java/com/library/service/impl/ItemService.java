@@ -10,6 +10,7 @@ public interface ItemService {
 
     ArrayList<Item> findAll();
 
+    Item findOne(int bookId);
     Item save(Item item);
 
 }
