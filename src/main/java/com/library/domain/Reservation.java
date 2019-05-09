@@ -8,6 +8,7 @@ public class Reservation {
 
     @Id
     @Column(name="reservation_id", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int reservationId;
 
 

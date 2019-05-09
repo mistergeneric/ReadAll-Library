@@ -11,6 +11,7 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int bookId;
     private int bookRef;
+    private boolean isLoaned;
 
 
 
@@ -32,4 +33,11 @@ public class Item {
     }
 
 
+    public boolean isLoaned() {
+        return isLoaned;
+    }
+
+    public void setLoaned(boolean loaned) {
+        isLoaned = loaned;
+    }
 }

@@ -10,6 +10,7 @@ public class Loan {
 
     @Id
     @Column(name="loan_id", nullable = false, updatable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int loanId;
 
     private Date dueDate;
@@ -17,6 +18,7 @@ public class Loan {
     @OneToOne
     @JoinColumn(name="user_id")
     private User user;
+
 
     private Date returnedOn;
 
@@ -44,5 +46,13 @@ public class Loan {
 
     public void setReturnedOn(Date returnedOn) {
         this.returnedOn = returnedOn;
+    }
+
+    public int getLoanId() {
+        return loanId;
+    }
+
+    public void setLoanId(int loanId) {
+        this.loanId = loanId;
     }
 }

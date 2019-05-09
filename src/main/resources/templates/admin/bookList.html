@@ -43,7 +43,7 @@
         <tbody>
         <tr data-th-each="book : ${bookList}">
             <td th:text="${book.bookRef}"></td>
-            <td th:text="${book.bookTitle}"></td>
+            <td><a  th:href="@{/bookInfo(bookRef=${book.bookRef})}"><span th:text="${book.bookTitle}"></span></a></td>
             <td th:text="${book.bookAuthor}"></td>
             <td th:text="${book.stockLevel}"></td>
             <td th:text="${book.publisher}"></td>

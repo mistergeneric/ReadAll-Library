@@ -2,9 +2,7 @@ package com.library.controller;
 
 import com.library.domain.Book;
 import com.library.domain.Item;
-import com.library.service.impl.BookService;
 import com.library.service.impl.BookServiceImpl;
-import com.library.service.impl.ItemService;
 import com.library.service.impl.ItemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,9 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -79,4 +79,26 @@ public class AdminController {
         model.addAttribute("bookList", bookList);
         return "admin/bookList";
     }
+
+
+    @RequestMapping("/updateBook")
+    public String updateBook(@RequestParam("bookRef") int bookRef, Model model)
+    {
+        Book book = bookService.findOne(bookRef);
+        model.addAttribute("book", book);
+
+        return "admin/updateBook";
+    }
+
+
+    @RequestMapping("/bookInfo")
+    public String bookInfo(@PathParam("bookRef") int bookRef, Model model){
+
+        Book book = bookService.findOne(bookRef);
+
+        model.addAttribute("book", book);
+        return "admin/bookInfo";
+
+    }
+
 }
