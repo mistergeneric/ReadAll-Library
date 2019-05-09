@@ -1,13 +1,10 @@
 package com.library.controller;
 
-import com.library.domain.Book;
-import com.library.domain.User;
+import com.library.domain.*;
 import com.library.domain.security.PasswordResetToken;
 import com.library.domain.security.Role;
 import com.library.domain.security.UserRole;
-import com.library.service.impl.BookService;
-import com.library.service.impl.UserSecurityService;
-import com.library.service.impl.UserService;
+import com.library.service.impl.*;
 import com.library.utility.MailConstructor;
 import com.library.utility.SecurityUtility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
+import java.lang.reflect.Array;
 import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -51,6 +49,16 @@ public class HomeController {
 
     @Autowired
     private UserSecurityService userSecurityService;
+
+    @Autowired
+    private LoanItemService loanItemService;
+
+    @Autowired
+    private LoanService loanService;
+
+    @Autowired
+    private ItemService itemService;
+
 
     @RequestMapping("/")
     public String index() {
@@ -186,6 +194,56 @@ public class HomeController {
 
         model.addAttribute("classActiveEdit", true);
         return "myProfile";
+    }
+
+    @RequestMapping("/myProfile")
+    public String myProfile(Model model, Principal principal)
+    {
+
+        String username = principal.getName();
+        User user = userService.findByUsername(username);
+
+        UserDetails userDetails = userSecurityService.loadUserByUsername(username);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+        ArrayList<Loan> loans = loanService.findAll();
+
+        ArrayList<LoanItem> loanItems = loanItemService.findAll();
+
+        ArrayList<Book> customerBooks = new ArrayList<>();
+
+        for(Loan x : loans)
+        {
+            if(x.getReturnedOn() == null) {
+                if (x.getUser().getId().equals(user.getId())) {
+                    for (LoanItem y : loanItems) {
+                        if (x.getLoanId() == y.getLoan().getLoanId()) {
+
+                            if (!customerBooks.contains(y.getBook())) {
+                                customerBooks.add(y.getBook());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+
+        model.addAttribute("bookList", customerBooks);
+        model.addAttribute("user", user);
+
+        model.addAttribute("classActiveEdit", true);
+
+        model.addAttribute("classActiveBooks", true);
+        return "myProfile";
+
     }
 
 

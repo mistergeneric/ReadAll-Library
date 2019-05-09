@@ -5,6 +5,7 @@ import com.library.repository.LoanItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -20,6 +21,11 @@ public class LoanItemServiceImpl implements LoanItemService {
         cal.setTime(today);
         cal.add(Calendar.DATE, 5);
         return cal.getTime();
+    }
+
+    @Override
+    public ArrayList<LoanItem> findAll() {
+        return (ArrayList<LoanItem>) loanItemRepository.findAll();
     }
 
     @Override

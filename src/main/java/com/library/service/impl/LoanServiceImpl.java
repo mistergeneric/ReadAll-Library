@@ -12,6 +12,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class LoanServiceImpl implements  LoanService {
 
@@ -32,4 +34,11 @@ public class LoanServiceImpl implements  LoanService {
         mailSender.send(email);
 
     }
+
+    @Override
+    public ArrayList<Loan> findAll() {
+        return (ArrayList<Loan>) loanRepository.findAll();
+    }
+
+
 }

@@ -13,6 +13,10 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int loanId;
 
+    @OneToOne
+    @JoinColumn(name="item_id")
+    private Item item;
+
     private Date dueDate;
 
     @OneToOne
@@ -46,6 +50,14 @@ public class Loan {
 
     public void setReturnedOn(Date returnedOn) {
         this.returnedOn = returnedOn;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public int getLoanId() {

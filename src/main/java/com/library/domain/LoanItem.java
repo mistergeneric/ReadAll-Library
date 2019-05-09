@@ -11,7 +11,7 @@ public class LoanItem {
     private int loanItemId;
 
     @OneToOne
-    @JoinColumn(name ="book_id")
+    @JoinColumn(name ="book_ref")
     private Book book;
 
     @ManyToOne

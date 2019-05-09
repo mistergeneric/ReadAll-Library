@@ -10,7 +10,9 @@ public class Item {
     @Column(name="book_id", nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int bookId;
-    private int bookRef;
+    @OneToOne
+    @JoinColumn(name="book_ref")
+    private Book book;
     private boolean isLoaned;
 
 
@@ -24,13 +26,6 @@ public class Item {
         this.bookId = bookId;
     }
 
-    public int getBookRef() {
-        return bookRef;
-    }
-
-    public void setBookRef(int bookRef) {
-        this.bookRef = bookRef;
-    }
 
 
     public boolean isLoaned() {
@@ -39,5 +34,13 @@ public class Item {
 
     public void setLoaned(boolean loaned) {
         isLoaned = loaned;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 }

@@ -45,7 +45,7 @@ public class AdminController {
         for(int i=0; book.getStockLevel() > i; i++)
         {
             Item item = new Item();
-            item.setBookRef(book.getBookRef());
+            item.setBook(book);
             itemService.save(item);
         }
 
