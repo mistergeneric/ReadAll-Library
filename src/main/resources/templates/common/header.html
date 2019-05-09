@@ -116,7 +116,7 @@
                                         <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/registerDetails}"
                                         >Register</a>
                                     </li>
-                                    <li class="nav-item" th:classappend="${#strings.startsWith(view,'/myProfile')? 'active' : ''}" sec:authorize="hasRole('ROLE_USER')">
+                                    <li class="nav-item" th:classappend="${#strings.startsWith(view,'/myProfile')? 'active' : ''}" sec:authorize="isAuthenticated()">
                                         <a class="nav-link"  th:href="@{/myProfile}"
                                         >My Profile</a>
                                     </li>

@@ -188,12 +188,6 @@ public class HomeController {
         return "myProfile";
     }
 
-    @RequestMapping("/browse")
-    public String browseLibrary(Model model){
-        List<Book> bookList = bookService.findAll();
-        model.addAttribute("bookList", bookList);
-        return "browseLibrary";
-    }
 
     @RequestMapping("/aboutus")
     public String aboutUs(Model model){
@@ -207,24 +201,6 @@ public class HomeController {
         return "contactus";
     }
 
-    @RequestMapping("/bookDetail")
-    public String bookDetail(@PathParam("bookRef") int bookRef, Model model, Principal principal)
-    {
-        if(principal != null)
-        {
-            String username = principal.getName();
-            User user = userService.findByUsername(username);
-            model.addAttribute("user", user);
-        }
-
-        Book book = bookService.findOne(bookRef);
-
-
-        model.addAttribute("book", book);
-
-        return "bookDetail";
-
-    }
 
 
 

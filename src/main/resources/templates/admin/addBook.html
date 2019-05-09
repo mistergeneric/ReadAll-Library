@@ -62,7 +62,7 @@
                 <label class="" for="category">* Category</label>
                 <div class=""><select id="category" name="category" class="form-control" th:value="${book.category}">
                     <option value="" selected="selected" disabled="disabled">Please select an option</option>
-                    <option value="adventure" th:selected="(${book.category}=='management')">Adventure</option>
+                    <option value="adventure" th:selected="(${book.category}=='adventure')">Adventure</option>
                     <option value="biography" th:selected="(${book.category}=='biography')">Biography</option>
                     <option value="literature" th:selected="(${book.category}=='literature')">Literature</option>
                     <option value="crime" th:selected="(${book.category}=='crime')">Crime</option>
@@ -86,10 +86,10 @@
                 <label class="" for="format">* Format</label>
                 <div class=""><select id="format" name="format" class="form-control" th:value="${book.format}">
                     <option value="" selected="selected" disabled="disabled">Please select an option</option>
-                    <option value="adventure" th:selected="(${book.format}=='physical')">Physical</option>
-                    <option value="biography" th:selected="(${book.format}=='ebook')">E-Book</option>
-                    <option value="literature" th:selected="(${book.format}=='audiobook')">Audiobook</option>
-                    <option value="crime" th:selected="(${book.format}=='reference')">Reference</option>
+                    <option value="Physical" th:selected="(${book.format}=='physical')">Physical</option>
+                    <option value="E-Book" th:selected="(${book.format}=='ebook')">E-Book</option>
+                    <option value="Audiobook" th:selected="(${book.format}=='audiobook')">Audiobook</option>
+                    <option value="Reference" th:selected="(${book.format}=='reference')">Reference</option>
 
                 </select></div>
                 <span>Format</span>
