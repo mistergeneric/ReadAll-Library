@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="common/header :: common-header">
 
 </head>
@@ -10,30 +11,35 @@
 <!--================ End Header Menu Area =================-->
 <div class="container">
     <div class="row">
-        <div class="col-md-8"><h2 class="display-3" style="margin-top: 100px;"><span th:text="${#strings.toUpperCase(user.username)}"></span></h2></div>
+        <div class="col-md-8"><h2 class="display-3" style="margin-top: 100px;"><span
+                th:text="${#strings.toUpperCase(user.username)}"></span></h2></div>
         <div class="col-md-4"></div>
     </div>
     <div class="row" style="margin-top: 50px;">
         <div class="col-md-9">
             <ul class="nav nav-tabs">
-                <li class="nav-item" th:classappend="${classActiveEdit}? 'active' "> <a class="nav-link" href="#tab-1" data-toggle="tab"> <span
+                <li class="nav-item" th:classappend="${classActiveEdit}? 'active' "><a class="nav-link" href="#tab-1"
+                                                                                       data-toggle="tab"> <span
                         style="color: blueviolet">Edit</span></a>
                 </li>
-                <li class="nav-item" th:classappend="${classActiveBorrowed}? 'active'"><a class="nav-link" href="#tab-2" data-toggle="tab"><span
+                <li class="nav-item" th:classappend="${classActiveBooks}? 'active'"><a class="nav-link" href="#tab-2"
+                                                                                          data-toggle="tab"><span
                         style="color: blueviolet">Books on Loan</span></a>
                 </li>
-                <li class="nav-item" th:classappend="${classActiveBilling}? 'active'"><a class="nav-link" href="#tab-3" data-toggle="tab"><span
-                        style="color: blueviolet">Billing and Payment Details</span></a>
+                <li class="nav-item" th:classappend="${classActiveAccountType}? 'active'"><a class="nav-link" href="#tab-3"
+                                                                                         data-toggle="tab"><span
+                        style="color: blueviolet">Account Type</span></a>
                 </li>
-                <li class="nav-item" th:classappend="${classActiveShipping}? 'active'"><a class="nav-link" href="#tab-4" data-toggle="tab"><span
-                        style="color: blueviolet">Address and Shipping</span></a>
+                <li class="nav-item" th:classappend="${classActiveShipping}? 'active'"><a class="nav-link" href="#tab-4"
+                                                                                          data-toggle="tab"><span
+                        style="color: blueviolet">Billing and Payment Details</span></a>
                 </li>
 
             </ul>
             <!--Tab Panels -->
             <div class="tab-content">
                 <!-- Edit User Information -->
-                <div class="tab-pane fade collapse show" id="tab-1" th:classappend="${classActiveEdit}? 'in active' ">
+                <div class="tab-pane fade collapse show" id="tab-1" th:classappend="${classActiveEdit}? 'active' ">
                     <div class="card-group">
                         <div class="card" style="=border: none;">
                             <div class="card-body" style="background-color: #ededed; margin-top: 20px;">
@@ -44,43 +50,51 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label for="firstName">First Name</label>
-                                                <input type="text" class="form-control" id="firstName" name="firstName" th:value="${user.firstName}"/>
+                                                <input type="text" class="form-control" id="firstName" name="firstName"
+                                                       th:value="${user.firstName}"/>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="lastName">Last Name</label>
-                                                <input type="text" class="form-control" id="lastName" name="lastName" th:value="${user.lastName}"/>
+                                                <input type="text" class="form-control" id="lastName" name="lastName"
+                                                       th:value="${user.lastName}"/>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="username">Username</label>
-                                        <input type="text" class="form-control" id="userName" name="username" th:value="${user.username}"/>
+                                        <input type="text" class="form-control" id="userName" name="username"
+                                               th:value="${user.username}"/>
 
                                     </div>
 
                                     <div class="form-group">
                                         <label for="currentPassword">Password</label>
-                                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" th:value="${currentPassword}"/>
+                                        <input type="password" class="form-control" id="currentPassword"
+                                               name="currentPassword" th:value="${currentPassword}"/>
 
                                     </div>
-                                    <p style="color:darkblue" class="lead">Enter your current password to change the email address or password.</p>
+                                    <p style="color:darkblue" class="lead">Enter your current password to change the
+                                        email address or password.</p>
                                     <div class="form-group">
                                         <label for="email">Email Address</label>
-                                        <input type="text" class="form-control" id="email" name="email" th:value="${user.email}"/>
+                                        <input type="text" class="form-control" id="email" name="email"
+                                               th:value="${user.email}"/>
 
                                     </div>
                                     <p style="color:darkblue" class="lead">Please enter a valid email address.</p>
                                     <div class="form-group">
                                         <label for="txtNewPassword">New Password</label>
-                                        <input type="password" class="form-control" id="txtNewPassword" name="newPassword" />
+                                        <input type="password" class="form-control" id="txtNewPassword"
+                                               name="newPassword"/>
 
                                     </div>
                                     <div class="form-group">
                                         <label for="txtConfirmPassword">Confirm Password</label>
-                                        <input type="password" class="form-control" id="txtConfirmPassword"  />
+                                        <input type="password" class="form-control" id="txtConfirmPassword"/>
 
                                     </div>
-                                    <p style="color:darkblue" class="lead">To change the current user password, you need to correctly enter the new password in both fields.
+                                    <p style="color:darkblue" class="lead">To change the current user password, you need
+                                        to correctly enter the new password in both fields.
                                         Please enter and confirm your new password.</p>
 
                                     <button type="submit" class="btn btn-primary">Register</button>
@@ -89,7 +103,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade collapse show" id="tab-2" th:classappend="${classActiveBooks}? 'in active'">
+                <div class="tab-pane fade collapse show" id="tab-2" th:classappend="${classActiveBooks}? 'inactive'">
                     <div class="card-group">
                         <div class="card" style="=border: none;">
                             <div class="card-body" style="background-color: #ededed; margin-top: 20px;">
@@ -106,10 +120,11 @@
                                                 <div class="row">
 
                                                     <div class="col-md-3">
-                                                        <img alt="book cover" class="img-fluid shelf-book" th:src="@{/images/book/{img}(img=${book.bookRef}+ '.png')}"/>
+                                                        <img alt="book cover" class="img-fluid shelf-book"
+                                                             th:src="@{/images/book/{img}(img=${book.bookRef}+ '.png')}"/>
                                                     </div>
                                                     <div class="col-md-9">
-                                                      <h4 th:text="${book.bookTitle}"></h4>
+                                                        <h4 th:text="${book.bookTitle}"></h4>
                                                         <span th:text="'Date published: ' + ${book.publicationDate}"></span>
                                                         <br/>
                                                         <span th:text="'Author: ' + ${book.bookAuthor}"></span>
@@ -119,8 +134,10 @@
                                                         <span th:text="${book.noOfPages} + ' pages'"> </span>
                                                         <br/>
 
-                            </span>
-                                                       <a th:href="@{returnBook?bookRef=}+${book.bookRef}"><button class="btn btn-success" >Return</button></a>
+                                                        </span>
+                                                        <a th:href="@{returnBook?bookRef=}+${book.bookRef}">
+                                                            <button class="btn btn-success">Return</button>
+                                                        </a>
                                                         <p th:text="'Description: ' + ${#strings.abbreviate(book.description, 500)}"></p>
                                                     </div>
 
@@ -135,20 +152,42 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="tab-pane fade collapse show" id="tab-3" th:classappend="${classActiveAccountType}? ' inactive' ">
+                    <div class="card-group">
+                        <div class="card" style="=border: none;">
+                            <div class="card-body" style="background-color: #ededed; margin-top: 20px;">
+
+
+                                <div>
+                                    <p><b>Your current account type is: </b></p>
+                                    <h5 class="display-4" sec:authorize="hasRole('ROLE_USER')">Free Account</h5>
+                                    <h5 class="display-4" sec:authorize="hasRole('ROLE_ADMIN')">Admin Account</h5>
+
+                                    <p><b>Would you like to upgrade your account? Please press this button to set up or change payment</b></p>
+
+                                </div>
+
+
+                                    <a th:href="@{/upgradeAccount}"><button type="submit" class="btn btn-primary">Upgrade Account</button></a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <br/>
+            <br/>
+            <br>
         </div>
-        <br/>
-        <br/>
-        <br>
     </div>
-</div>
-<!--================ End Testimonial Area =================-->
+    <!--================ End Testimonial Area =================-->
 
-<div th:replace="common/header :: bottom-stuff"></div>
-<!--================ End footer Area  =================-->
+    <div th:replace="common/header :: bottom-stuff"></div>
+    <!--================ End footer Area  =================-->
 
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<div th:replace="common/header :: body-bottom-scripts"></div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <div th:replace="common/header :: body-bottom-scripts"></div>
 </body>
 </html>

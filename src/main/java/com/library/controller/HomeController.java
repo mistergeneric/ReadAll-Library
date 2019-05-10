@@ -239,6 +239,7 @@ public class HomeController {
         model.addAttribute("bookList", customerBooks);
         model.addAttribute("user", user);
 
+        model.addAttribute("classActiveAccountType", true);
         model.addAttribute("classActiveEdit", true);
 
         model.addAttribute("classActiveBooks", true);
