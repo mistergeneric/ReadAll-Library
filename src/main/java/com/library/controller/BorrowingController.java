@@ -1,6 +1,7 @@
 package com.library.controller;
 
 import com.library.domain.*;
+import com.library.service.*;
 import com.library.service.impl.*;
 import com.library.utility.MailConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,10 @@ public class BorrowingController {
                 user.setNumberOfLoans(user.getNumberOfLoans() - 1);
                 ArrayList<Item> allItems = itemService.findAll();
                 ArrayList<Book> userBooks = new ArrayList<>();
+
+
+                //Andrew, in the future yuu may be tempted to 'fix' this. DO NOT TOUCH for it works now and you
+                //may break it
                 for(Item itemi : allItems)
                 {
                     if(itemi.getBook().getBookRef() == bookRef && !itemi.isLoaned())

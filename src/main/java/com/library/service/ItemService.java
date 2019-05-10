@@ -1,4 +1,4 @@
-package com.library.service.impl;
+package com.library.service;
 
 import com.library.domain.Book;
 import com.library.domain.Item;

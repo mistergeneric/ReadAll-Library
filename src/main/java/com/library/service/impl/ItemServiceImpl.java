@@ -1,8 +1,8 @@
 package com.library.service.impl;
 
-import com.library.domain.Book;
 import com.library.domain.Item;
 import com.library.repository.ItemRepository;
+import com.library.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ItemServiceImpl implements ItemService{
+public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private ItemRepository itemRepository;

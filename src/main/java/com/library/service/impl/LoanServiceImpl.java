@@ -1,13 +1,11 @@
 package com.library.service.impl;
 
-import com.library.domain.Item;
 import com.library.domain.Loan;
 import com.library.domain.User;
-import com.library.repository.ItemRepository;
 import com.library.repository.LoanRepository;
+import com.library.service.LoanService;
 import com.library.utility.MailConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-public class LoanServiceImpl implements  LoanService {
+public class LoanServiceImpl implements LoanService {
 
     @Autowired
     private JavaMailSender mailSender;

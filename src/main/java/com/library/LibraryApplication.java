@@ -3,7 +3,7 @@ package com.library;
 import com.library.domain.User;
 import com.library.domain.security.Role;
 import com.library.domain.security.UserRole;
-import com.library.service.impl.UserService;
+import com.library.service.UserService;
 import com.library.utility.SecurityUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

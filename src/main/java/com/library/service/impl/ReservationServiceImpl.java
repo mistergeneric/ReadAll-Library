@@ -1,9 +1,8 @@
 package com.library.service.impl;
 
-import com.library.domain.Loan;
 import com.library.domain.Reservation;
-import com.library.repository.LoanRepository;
 import com.library.repository.ReservationRepository;
+import com.library.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

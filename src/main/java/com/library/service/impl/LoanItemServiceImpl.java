@@ -2,6 +2,7 @@ package com.library.service.impl;
 
 import com.library.domain.LoanItem;
 import com.library.repository.LoanItemRepository;
+import com.library.service.LoanItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

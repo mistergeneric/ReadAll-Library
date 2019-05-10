@@ -1,4 +1,4 @@
-package com.library.service.impl;
+package com.library.service;
 import com.library.domain.User;
 import com.library.domain.security.PasswordResetToken;
 import com.library.domain.security.UserRole;

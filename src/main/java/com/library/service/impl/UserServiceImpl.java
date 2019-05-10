@@ -6,6 +6,7 @@ import com.library.domain.security.UserRole;
 import com.library.repository.PasswordResetTokenRepository;
 import com.library.repository.RoleRepository;
 import com.library.repository.UserRepository;
+import com.library.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
