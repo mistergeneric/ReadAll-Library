@@ -103,7 +103,7 @@ public class BorrowingController {
                     }
                 }
                 if(userBooks.contains(book)){
-                    return "alreadyBorrowed";
+                    return "library/alreadyBorrowed";
                 }
 
                 Loan loan = new Loan();
@@ -142,12 +142,12 @@ public class BorrowingController {
                 model.addAttribute("user", user);
             }
             else{
-                return"index";
+                return"library/alreadyBorrowed";
             }
         }
 
 
-        return "loanConfirmation";
+        return "library/loanConfirmation";
     }
 
 
@@ -155,7 +155,7 @@ public class BorrowingController {
     public String browseLibrary(Model model){
         List<Book> bookList = bookService.findAll();
         model.addAttribute("bookList", bookList);
-        return "browseLibrary";
+        return "library/browseLibrary";
     }
 
 
@@ -174,7 +174,7 @@ public class BorrowingController {
 
         model.addAttribute("book", book);
 
-        return "bookDetail";
+        return "library/bookDetail";
 
     }
 
@@ -227,7 +227,7 @@ public class BorrowingController {
 
         model.addAttribute("classActiveBooks", true);
 
-        return "myProfile";
+        return "account/myProfile";
     }
 
     @RequestMapping("/reserveBook")
@@ -258,7 +258,7 @@ public class BorrowingController {
         }
         if(checkItems.isEmpty())
         {
-            return "reserveNoStock";
+            return "library/reserveNoStock";
         }
         for(Loan loan : allLoans)
         {
@@ -290,7 +290,7 @@ public class BorrowingController {
         reservationService.save(reservation);
 
         model.addAttribute("reservation", reservation);
-        return "reservedSuccess";
+        return "library/reservedSuccess";
 
     }
 

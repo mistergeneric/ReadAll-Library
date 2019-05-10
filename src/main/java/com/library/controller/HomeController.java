@@ -8,10 +8,8 @@ import com.library.service.impl.*;
 import com.library.utility.MailConstructor;
 import com.library.utility.SecurityUtility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,13 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
-import javax.websocket.server.PathParam;
-import java.lang.reflect.Array;
 import java.security.Principal;
 import java.util.*;
-import java.util.stream.Collectors;
 
 //this is the home controller which returns the index page
 @Controller
@@ -69,14 +63,14 @@ public class HomeController {
     @RequestMapping("/login")
     public String login(Model model) {
         model.addAttribute("classActiveLogin", true);
-        return "myAccount";
+        return "account/myAccount";
     }
 
     @RequestMapping("/registerDetails")
     public String registerDetails(
             Model model) {
         model.addAttribute("classActiveNewAccount", true);
-        return "myAccount";
+        return "account/myAccount";
     }
 
     @RequestMapping(value = "/newUser", method = RequestMethod.POST)
@@ -88,12 +82,12 @@ public class HomeController {
             model.addAttribute("username", username);
             if (userService.findByUsername(username) != null) {
                 model.addAttribute("usernameExists", true);
-                return "myAccount";
+                return "account/myAccount";
             }
             if (userService.findByEmail(userEmail) != null) {
                 model.addAttribute("emailExists", true);
 
-                return "myAccount";
+                return "account/myAccount";
             }
 
             User user = new User();
@@ -106,6 +100,7 @@ public class HomeController {
 
             user.setPassword(encryptedPassword);
 
+            user.setNumberOfLoans(5);
             Role role = new Role();
             role.setRoleId(1);
             role.setName("ROLE_USER");
@@ -127,7 +122,7 @@ public class HomeController {
 
             model.addAttribute("emailSent", true);
 
-            return "myAccount";
+            return "account/myAccount";
         }
     }
 
@@ -143,7 +138,7 @@ public class HomeController {
         if(user == null)
         {
             model.addAttribute("emailNotExist", true);
-            return "myAccount";
+            return "account/myAccount";
         }
 
         String password = SecurityUtility.randomPassword();
@@ -166,7 +161,7 @@ public class HomeController {
         model.addAttribute("forgetPasswordEmailSent", true);
 
 
-        return "myAccount";
+        return "account/myAccount";
     }
 
     @RequestMapping("/newAccount")
@@ -193,7 +188,7 @@ public class HomeController {
         model.addAttribute("user", user);
 
         model.addAttribute("classActiveEdit", true);
-        return "myProfile";
+        return "account/myProfile";
     }
 
     @RequestMapping("/myProfile")
@@ -243,7 +238,7 @@ public class HomeController {
         model.addAttribute("classActiveEdit", true);
 
         model.addAttribute("classActiveBooks", true);
-        return "myProfile";
+        return "account/myProfile";
 
     }
 
