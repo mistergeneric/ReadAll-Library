@@ -21,16 +21,26 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
+
+/**
+ * This controller controls the admin pages for the web application
+ */
 @Controller
-@RequestMapping("/")
 public class AdminController {
 
+    //autowired annotation allows spring framework to resolve and use beans outwith the current bean
+    //in this case the book service bean as a private property
     @Autowired
     private BookServiceImpl bookService;
-
+    //item service bean as private property
     @Autowired
     private ItemServiceImpl itemService;
 
+    /**
+     * This is the controller for loading the admin's add book html page
+     * @param model the model allows us to alter the html page for the client server side
+     * @return returns the valid html page with valid attributes for the html
+     */
     @RequestMapping(value="/add", method = RequestMethod.GET)
     public String addBook(Model model){
         Book book = new Book();
@@ -38,6 +48,16 @@ public class AdminController {
         return "admin/addBook";
     }
 
+    /**
+     * this is the post action for the add book page, if the submit button is clicked.
+     * Once submit is pressed, the valid number of book copies (Items) are created and saved into the database.
+     * The new book is added to the database.
+     * The book image is addded to the web app using the MultipartFile object.
+     * The redirect loads the admin Book list page.
+     * @param book - the book to be saved to the database
+     * @param request - the http request
+     * @return - The html page to be loaded for the client, in this case the admin book list page.
+     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/add", method = RequestMethod.POST)
     public String addBookPost(@ModelAttribute("book") Book book, HttpServletRequest request){
@@ -66,6 +86,11 @@ public class AdminController {
     }
 
 
+    /**
+     * This method returns the admin home page.
+     * @param model The model allows us to alter the html page
+     * @return The admin home html page is returned for the client.
+     */
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping("/admin" )
     public String admin(Model model){
@@ -73,6 +98,13 @@ public class AdminController {
         return "admin/adminHome";
     }
 
+    /**
+     * This method returns the book list html page for the admin.
+     * First, this method runs the find all method from book service to load all the books in the library.
+     * The model instance has the list of books added to it so it can be correctly displayed on the html page
+     * @param model The Model object allows the back end to add attributes and commands to the front end html page
+     * @return The book list html page is returned
+     */
     @RequestMapping("/bookList")
     public String bookList(Model model){
         List<Book> bookList = bookService.findAll();
@@ -81,6 +113,15 @@ public class AdminController {
     }
 
 
+    /**
+     * This method loads the update book page. It uses the book reference number to find the book from the database.
+     * It does this by passing the bookref variable into the book service find one method.
+     * It adds the found book to the model by calling the addattribute method and using bookref as the parameter.
+     * It then returns the update book html page
+     * @param bookRef int variable from the previous html page
+     * @param model The Model object allows the back end to add attributes and commands to the front end html page
+     * @return the update book html page
+     */
     @RequestMapping("/updateBook")
     public String updateBook(@RequestParam("bookRef") int bookRef, Model model)
     {
@@ -91,6 +132,16 @@ public class AdminController {
     }
 
 
+    /**
+     * This method is for displaying the book info page to the user.
+     * It uses the book reference number to find the book from the database.
+     * It does this by passing the bookref variable into the book service find one method.
+     * It adds the found book to the model by calling the addattribute method and using bookref as the parameter.
+     * It then returns the book info html page
+     * @param bookRef int variable from the previous html page
+     * @param model The Model object allows the back end to add attributes and commands to the front end html page
+     * @return the book info html page
+     */
     @RequestMapping("/bookInfo")
     public String bookInfo(@PathParam("bookRef") int bookRef, Model model){
 
