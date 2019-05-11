@@ -18,37 +18,69 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * The borrowing controller controls the borrowing acions on items that the user may borrow from the library
+ */
 @Controller
 public class BorrowingController {
 
 
+    /**
+     * This bean allows the system to send us e-mails to users
+     */
     @Autowired
     private JavaMailSender mailSender;
 
+    /**
+     * This bean constructs e-mails for the system
+     */
     @Autowired
     private MailConstructor mailConstructor;
 
+    /**
+     * This bean is the user service
+     */
     @Autowired
     private UserService userService;
-
+    /**
+     * This bean is the book service
+     */
     @Autowired
     private BookService bookService;
-
+    /**
+     * This bean is the loan service
+     */
     @Autowired
     private LoanService loanService;
-
+    /**
+     * This bean is the user security service
+     */
     @Autowired
     private UserSecurityService userSecurityService;
-
+    /**
+     * This bean is the item service
+     */
     @Autowired
     private ItemService itemService;
-
+    /**
+     * This bean is the loan item service
+     */
     @Autowired
     private LoanItemService loanItemService;
-
+    /**
+     * This bean is the reservation service
+     */
     @Autowired
     private ReservationService reservationService;
 
+    /**
+     * This method controls the borrowing item functionality.
+     *
+     * @param model
+     * @param bookRef
+     * @param principal
+     * @return
+     */
     @RequestMapping("/borrowItem")
     public String borrowItem(Model model, @RequestParam("bookRef") int bookRef, Principal principal)
     {

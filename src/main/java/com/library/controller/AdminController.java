@@ -28,11 +28,17 @@ import java.util.List;
 @Controller
 public class AdminController {
 
-    //autowired annotation allows spring framework to resolve and use beans outwith the current bean
-    //in this case the book service bean as a private property
+    /**
+     * autowired annotation allows spring framework to resolve and use beans outwith the current bean
+     * in this case the book service bean as a private property
+     */
     @Autowired
     private BookServiceImpl bookService;
-    //item service bean as private property
+
+
+    /**
+     * item service bean as private property
+     */
     @Autowired
     private ItemServiceImpl itemService;
 
