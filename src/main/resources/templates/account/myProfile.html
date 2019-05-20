@@ -240,12 +240,16 @@
                                         <input hidden="hidden" name="id" th:value="${userPayment.paymentId}">
                                         <div class="form-group">
                                             <label>* Give a name for this payment option: </label>
-                                            <input type="text" class="form-control" id="cardName" placeholder="Card Name" th:name="cardName" required="required" th:value="${userPayment.cardName}" />
+                                            <input type="text" class="form-control" id="cardName"
+                                                   placeholder="Card Name" th:name="cardName" required="required"
+                                                   th:value="${userPayment.cardName}"/>
 
                                         </div>
 
                                     </form>
                                 </div>
+                                <!--TODO You need to add the rest of the payment details stuff andrew-->
+                                <!--TODO Flesh out each account type -->
 
                             </div>
                         </div>
@@ -260,11 +264,11 @@
 </div>
 <!--================ End Testimonial Area =================-->
 
-<div th:replace="common/header :: bottom-stuff"></div>
-<!--================ End footer Area  =================-->
+                                <div th:replace="common/header :: bottom-stuff"></div>
+                                <!--================ End footer Area  =================-->
 
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<div th:replace="common/header :: body-bottom-scripts"></div>
+                                <!-- Optional JavaScript -->
+                                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+                                <div th:replace="common/header :: body-bottom-scripts"></div>
 </body>
 </html>
