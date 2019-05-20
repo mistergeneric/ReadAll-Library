@@ -1,6 +1,6 @@
 package com.library.domain.config;
 
-import com.library.service.UserSecurityService;
+import com.library.service.impl.UserSecurityService;
 import com.library.utility.SecurityUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

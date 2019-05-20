@@ -229,16 +229,17 @@ public class HomeController {
         }
 
 
-
-
+        model.addAttribute("userPaymentList", user.getUserPaymentList());
+        model.addAttribute("listOfCurrentPayments", true);
 
         model.addAttribute("bookList", customerBooks);
         model.addAttribute("user", user);
 
         model.addAttribute("classActiveAccountType", true);
         model.addAttribute("classActiveEdit", true);
-
         model.addAttribute("classActiveBooks", true);
+
+        model.addAttribute("classActiveBilling", true);
         return "account/myProfile";
 
     }

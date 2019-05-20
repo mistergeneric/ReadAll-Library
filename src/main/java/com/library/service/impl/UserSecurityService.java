@@ -1,4 +1,4 @@
-package com.library.service;
+package com.library.service.impl;
 
 import com.library.domain.User;
 import com.library.repository.UserRepository;

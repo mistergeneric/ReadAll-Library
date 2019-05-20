@@ -44,7 +44,7 @@
                                 <span th:text="${book.stockLevel}"></span>
                             </span>
                         <a th:href="@{bookDetail?bookRef=}+${book.bookRef}"><button class="btn btn-success" >Borrow</button></a>
-                            <p th:text="'Description: ' + ${#strings.abbreviate(book.description, 500)}"></p>
+                            <p th:utext="'Description: ' + ${#strings.abbreviate(book.description, 500)}"></p>
                         </div>
 
                     </div>

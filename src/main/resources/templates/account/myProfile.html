@@ -23,11 +23,12 @@
                         style="color: blueviolet">Edit</span></a>
                 </li>
                 <li class="nav-item" th:classappend="${classActiveBooks}? 'active'"><a class="nav-link" href="#tab-2"
-                                                                                          data-toggle="tab"><span
+                                                                                       data-toggle="tab"><span
                         style="color: blueviolet">Books on Loan</span></a>
                 </li>
-                <li class="nav-item" th:classappend="${classActiveAccountType}? 'active'"><a class="nav-link" href="#tab-3"
-                                                                                         data-toggle="tab"><span
+                <li class="nav-item" th:classappend="${classActiveAccountType}? 'active'"><a class="nav-link"
+                                                                                             href="#tab-3"
+                                                                                             data-toggle="tab"><span
                         style="color: blueviolet">Account Type</span></a>
                 </li>
                 <li class="nav-item" th:classappend="${classActiveShipping}? 'active'"><a class="nav-link" href="#tab-4"
@@ -155,7 +156,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade collapse show" id="tab-3" th:classappend="${classActiveAccountType}? ' inactive' ">
+                <div class="tab-pane fade collapse show" id="tab-3"
+                     th:classappend="${classActiveAccountType}? ' inactive' ">
                     <div class="card-group">
                         <div class="card" style="=border: none;">
                             <div class="card-body" style="background-color: #ededed; margin-top: 20px;">
@@ -166,30 +168,103 @@
                                     <h5 class="display-4" sec:authorize="hasRole('ROLE_USER')">Free Account</h5>
                                     <h5 class="display-4" sec:authorize="hasRole('ROLE_ADMIN')">Admin Account</h5>
 
-                                    <p><b>Would you like to upgrade your account? Please press this button to set up or change payment</b></p>
+                                    <p><b>Would you like to upgrade your account? Please press this button to set up or
+                                        change payment</b></p>
 
                                 </div>
 
 
-                                    <a th:href="@{/upgradeAccount}"><button type="submit" class="btn btn-primary">Upgrade Account</button></a>
+                                <a th:href="@{/upgradeAccount}">
+                                    <button type="submit" class="btn btn-primary">Upgrade Account</button>
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade collapse show" id="tab-4"
+                     th:classappend="${classActiveBilling}? ' inactive' ">
+                    <div class="card-group">
+                        <div class="card" style="=border: none;">
+                            <div class="card-body" style="background-color: #ededed; margin-top: 20px;">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item active">
+                                        <a th:href="@{/listOfCurrentPayment}"
+                                           th:style="${listOfCurrentPayments}? 'color:red'">Current Payment Details</a>
+                                    </li>
+
+                                    <li class="breadcrumb-item">
+                                        <a th:href="@{/addPaymentOption}" th:style="${addPaymentOption}? 'color:red'">Add
+                                            Payment Details</a>
+                                    </li>
+                                </ol>
+
+                                <div th:if="${listOfCurrentPayments}">
+                                    <form th:action="@{/setDefaultPayment}" method="post">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Default</th>
+                                                <th>Card</th>
+                                                <th>Operations</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr data-th-each="userPayment : ${userPaymentList}">
+                                                <td>
+                                                    <input type="radio" name="defaultUserPaymentId"
+                                                           th:value="${userPayment.paymentId}"
+                                                           th:checked="${userPayment.defaultPayment}"/>
+                                                </td>
+                                                <td th:text="${userPayment.cardName}">
+
+                                                </td>
+                                                <td>
+                                                    <a th:href="@{/updateCreditCard(id=${userPayment.paymentId})}"><i
+                                                            class="fa fa-pencil"></i></a>
+                                                    <a th:href="@{/removeCreditCard(id=${userPayment.paymentId})}"><i
+                                                            class="fa fa-times"></i></a>
+
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <button class="btn btn-primary" type="submit">Save</button>
+                                    </form>
+                                </div>
+                                <div th:if="${addPaymentOption}">
+                                    <form th:action="@{addPaymentOption}" method="post">
+                                        <div class="bg-info" th:if="${updateUserPaymentInfo}">User info updated.</div>
+
+                                        <input hidden="hidden" name="id" th:value="${userPayment.paymentId}">
+                                        <div class="form-group">
+                                            <label>* Give a name for this payment option: </label>
+                                            <input type="text" class="form-control" id="cardName" placeholder="Card Name" th:name="cardName" required="required" th:value="${userPayment.cardName}" />
+
+                                        </div>
+
+                                    </form>
+                                </div>
 
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <br/>
-            <br/>
-            <br>
         </div>
+        <br/>
+        <br/>
+        <br>
     </div>
-    <!--================ End Testimonial Area =================-->
+</div>
+<!--================ End Testimonial Area =================-->
 
-    <div th:replace="common/header :: bottom-stuff"></div>
-    <!--================ End footer Area  =================-->
+<div th:replace="common/header :: bottom-stuff"></div>
+<!--================ End footer Area  =================-->
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <div th:replace="common/header :: body-bottom-scripts"></div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<div th:replace="common/header :: body-bottom-scripts"></div>
 </body>
 </html>

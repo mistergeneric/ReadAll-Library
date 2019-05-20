@@ -233,6 +233,7 @@ public class BorrowingController {
         user.setNumberOfLoans(user.getNumberOfLoans() + 1);
 
 
+
         for(LoanItem loanItem : allLoanItems)
         {
             if(loanItem.getBook().getBookRef() == bookRef){
@@ -257,6 +258,7 @@ public class BorrowingController {
         book.setStockLevel(book.getStockLevel() +1);
         bookService.save(book);
 
+        userService.save(user);
         model.addAttribute("bookList", userBooks);
         model.addAttribute("user", user);
 

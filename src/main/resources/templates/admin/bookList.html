@@ -73,5 +73,15 @@
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <div th:replace="common/header :: body-bottom-scripts"></div>
+<script>
+    $(document).ready(function () {
+       $("#bookListTable").DataTable({
+           "lengthMenu" : [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+           "ordering" : false,
+           stateSave : true
+
+       });
+    });
+</script>
 </body>
 </html>
