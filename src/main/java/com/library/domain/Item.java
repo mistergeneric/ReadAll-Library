@@ -15,7 +15,9 @@ public class Item {
     private Book book;
     private boolean isLoaned;
 
-
+    @ManyToOne
+    @JoinColumn(name = "basket_id")
+    private Basket basket;
 
 
     public int getBookId() {
@@ -42,5 +44,13 @@ public class Item {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public Basket getBasket() {
+        return basket;
+    }
+
+    public void setBasket(Basket basket) {
+        this.basket = basket;
     }
 }

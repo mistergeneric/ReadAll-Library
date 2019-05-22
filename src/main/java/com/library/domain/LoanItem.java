@@ -18,6 +18,10 @@ public class LoanItem {
     @JoinColumn(name = "loan_id")
     private Loan loan;
 
+    @OneToOne
+    @JoinColumn(name="book_id")
+     private Item item;
+
     public void setBook(Book book) {
         this.book = book;
     }
@@ -40,5 +44,13 @@ public class LoanItem {
 
     public void setLoanItemId(int loanItemId) {
         this.loanItemId = loanItemId;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 }

@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="css/themify-icons.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
-
+    <link th:href="@{/css/fontawesome.css}" rel="stylesheet"/>
     <link rel="stylesheet" href="owl-carousel/owl.carousel.min.css"/>
     <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css"/>
     <!-- main css -->
@@ -83,6 +83,9 @@
                             </li>
                             <li th:classappend="${#strings.startsWith(view,'/aboutus')? 'active' : ''}" class="nav-item">
                                 <a class="nav-link" th:href="@{/aboutus}">About</a>
+                            </li>
+                            <li  class="nav-item">
+                                <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/basket}">Basket</a>
                             </li>
                             <li class="nav-item submenu dropdown">
                                 <a

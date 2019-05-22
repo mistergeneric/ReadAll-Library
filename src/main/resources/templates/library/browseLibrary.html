@@ -15,6 +15,11 @@
    <div th:if="${emptyList}">
        <h5 style="font-style: italic">Nothing found, please try a different search</h5>
    </div>
+
+    <div class="alert alert-info" th:if="${addedSuccess}">
+        Item added to basket! Browse for more.
+    </div>
+
     <table border="0" id="bookList">
         <thead>
         <tr>
@@ -25,6 +30,7 @@
         <tr class="book-item" data-th-each="book : ${bookList}">
             <td>
                 <div th:if="${book != null}">
+
                     <div class="row">
 
                         <div class="col-md-3">

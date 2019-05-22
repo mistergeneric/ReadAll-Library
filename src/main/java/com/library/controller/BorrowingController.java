@@ -73,6 +73,12 @@ public class BorrowingController {
     @Autowired
     private ReservationService reservationService;
 
+    @Autowired
+    private BasketService basketService;
+
+
+    @Autowired
+    private BasketItemService basketItemService;
     /**
      * This method controls the borrowing item functionality.
      *
@@ -81,6 +87,7 @@ public class BorrowingController {
      * @param principal the user currently logged in
      * @return
      */
+
     @RequestMapping("/borrowItem")
     public String borrowItem(Model model, @RequestParam("bookRef") int bookRef, Principal principal) {
 
@@ -157,7 +164,6 @@ public class BorrowingController {
                 Loan loan = new Loan();
                 loan.setUser(user);
 
-                loan.setItem(item);
 
                 Date dt = new Date();
                 Calendar c = Calendar.getInstance();
@@ -289,7 +295,7 @@ public class BorrowingController {
                         loan.setReturnedOn(returned);
                         loanService.save(loan);
                         for (Item item : allItems) {
-                            if (item.getBookId() == loan.getItem().getBookId()) {
+                            if (item.getBookId() == loanItem.getItem().getBookId()) {
                                 item.setLoaned(false);
                                 itemService.save(item);
                             }
@@ -329,7 +335,7 @@ public class BorrowingController {
         ArrayList<Loan> allLoans = loanService.findAll();
         String username = principal.getName();
         ArrayList<Item> checkItems = new ArrayList<>();
-
+        ArrayList<LoanItem> allLoanItems = loanItemService.findAll();
         User user = userService.findByUsername(username);
         Item reserveredItem = new Item();
         Date reservationDate = new Date();
@@ -338,10 +344,12 @@ public class BorrowingController {
         for (Item item : allItems) {
             for (Loan loan : allLoans) {
                 if (bookRef == item.getBook().getBookRef()) {
-                    if (item.getBookId() == loan.getItem().getBookId()) {
-                        //this is used to check if there is no copies of a requested book
-                        checkItems.add(item);
+                    for (LoanItem loanItem : allLoanItems) {
+                        if (item.getBookId() == loanItem.getItem().getBookId()) {
+                            //this is used to check if there is no copies of a requested book
+                            checkItems.add(item);
 
+                        }
                     }
                 }
 
@@ -353,20 +361,23 @@ public class BorrowingController {
         }
         //this is setting a reservation date variable to the most recently found due date for a copy
         for (Loan loan : allLoans) {
-            if (loan.getItem().getBook().getBookRef() == book.getBookRef()) {
-                reservationDate = loan.getDueDate();
+            for(LoanItem loanItem : allLoanItems) {
+                if (loanItem.getItem().getBook().getBookRef() == book.getBookRef()) {
+                    reservationDate = loan.getDueDate();
+                }
             }
         }
         for (Loan loan : allLoans) {
+            for (LoanItem loanItem :allLoanItems){
+                if (loanItem.getItem().getBook().getBookRef() == book.getBookRef()) {
+                    //finding the date for reservation which is closest to now
+                    if (reservationDate.compareTo(loan.getDueDate()) > 0) {
+                        reservationDate = loan.getDueDate();
 
-            if (loan.getItem().getBook().getBookRef() == book.getBookRef()) {
-                //finding the date for reservation which is closest to now
-                if (reservationDate.compareTo(loan.getDueDate()) > 0) {
-                    reservationDate = loan.getDueDate();
+                    }
+                    reserveredItem = itemService.findOne(loanItem.getItem().getBookId());
 
                 }
-                reserveredItem = itemService.findOne(loan.getItem().getBookId());
-
             }
         }
         //TODO - if we don't check reservations, 2 people can reserve for same date
@@ -383,6 +394,81 @@ public class BorrowingController {
         //returning the html reserved page
         return "library/reservedSuccess";
 
+    }
+
+    @RequestMapping("/basket")
+    public String basket(Model model, Principal principal)
+    {
+        User user = userService.findByUsername(principal.getName());
+
+        Basket basket = basketService.findUserBasket(user);
+        ArrayList<BasketItem> basketItems = (ArrayList<BasketItem>) basketItemService.findByBasket(basket);
+        for(BasketItem basketItem : basketItems)
+        {
+            basket.getBasket().add(basketItem.getBook());
+        }
+        model.addAttribute("user", user);
+
+        if(basket == null)
+        {
+            model.addAttribute("emptyCart", true);
+            return "basket";
+        }
+
+        if(basket.getBasket().isEmpty())
+        {
+            model.addAttribute("emptyCart", true);
+            return "basket";
+        }
+
+        model.addAttribute("cartItemList", basket.getBasket());
+
+        return "basket";
+
+    }
+
+    @RequestMapping("/addToBasket")
+    public String addToBasket(Model model, Principal principal, @RequestParam("bookRef") int bookRef)
+    {
+        User user = userService.findByUsername(principal.getName());
+        Basket basket = new Basket();
+        Book book = bookService.findOne(bookRef);
+
+        if(itemService.availabilityChecker(user, book)) {
+            if (basketService.findUserBasket(user) != null) {
+                basket = basketService.findUserBasket(user);
+            }
+            ArrayList<BasketItem> basketItems = (ArrayList<BasketItem>) basketItemService.findByBasket(basket);
+
+            if(basketItems.contains(book))
+            {
+                return "library/alreadyBorrowed";
+            }
+
+            ArrayList<Book> basketStuff = new ArrayList<>();
+            basket.setBasket(basketStuff);
+
+
+            BasketItem basketItem = new BasketItem();
+            basketItem.setBook(book);
+            basket.getBasket().add(bookService.findOne(bookRef));
+            basket.setUser(user);
+            model.addAttribute("user", user);
+            basketItem.setBasket(basket);
+
+
+            basketItemService.save(basketItem);
+            basketService.save(basket);
+            model.addAttribute("addedSuccess", true);
+
+            //loading all the books from database and attaching it to the model
+            List<Book> bookList = bookService.findAll();
+            model.addAttribute("bookList", bookList);
+            return "library/browseLibrary";
+        }
+        else{
+            return "library/alreadyBorrowed";
+        }
     }
 
 

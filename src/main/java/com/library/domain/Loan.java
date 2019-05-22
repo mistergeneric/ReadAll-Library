@@ -1,9 +1,13 @@
 package com.library.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.library.domain.security.UserRole;
 import org.hibernate.engine.profile.Fetch;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Loan {
@@ -13,9 +17,6 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int loanId;
 
-    @OneToOne
-    @JoinColumn(name="item_id")
-    private Item item;
 
     private Date dueDate;
 
@@ -52,13 +53,6 @@ public class Loan {
         this.returnedOn = returnedOn;
     }
 
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
 
     public int getLoanId() {
         return loanId;
@@ -67,4 +61,5 @@ public class Loan {
     public void setLoanId(int loanId) {
         this.loanId = loanId;
     }
+
 }

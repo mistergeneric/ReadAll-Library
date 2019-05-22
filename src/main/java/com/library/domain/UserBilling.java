@@ -10,9 +10,9 @@ public class UserBilling {
     private Long billingId;
     private String userBillingName;
     private String userBillingStreet1;
-    private String getUserBillingStreet2;
+    private String userBillingStreet2;
     private String userBillingCity;
-    private String getUserBillingPostcode;
+    private String userBillingPostcode;
 
     @OneToOne(cascade = CascadeType.ALL)
     private UserPayment userPayment;
@@ -41,12 +41,12 @@ public class UserBilling {
         this.userBillingStreet1 = userBillingStreet1;
     }
 
-    public String getGetUserBillingStreet2() {
-        return getUserBillingStreet2;
+    public String getUserBillingStreet2() {
+        return userBillingStreet2;
     }
 
-    public void setGetUserBillingStreet2(String getUserBillingStreet2) {
-        this.getUserBillingStreet2 = getUserBillingStreet2;
+    public void setUserBillingStreet2(String userBillingStreet2) {
+        this.userBillingStreet2 = userBillingStreet2;
     }
 
     public String getUserBillingCity() {
@@ -57,12 +57,12 @@ public class UserBilling {
         this.userBillingCity = userBillingCity;
     }
 
-    public String getGetUserBillingPostcode() {
-        return getUserBillingPostcode;
+    public String getUserBillingPostcode() {
+        return userBillingPostcode;
     }
 
-    public void setGetUserBillingPostcode(String getUserBillingPostcode) {
-        this.getUserBillingPostcode = getUserBillingPostcode;
+    public void setUserBillingPostcode(String getUserBillingPostcode) {
+        this.userBillingPostcode = getUserBillingPostcode;
     }
 
     public UserPayment getUserPayment() {

@@ -1,10 +1,13 @@
 package com.library.service.impl;
 
 import com.library.domain.User;
+import com.library.domain.UserBilling;
+import com.library.domain.UserPayment;
 import com.library.domain.security.PasswordResetToken;
 import com.library.domain.security.UserRole;
 import com.library.repository.PasswordResetTokenRepository;
 import com.library.repository.RoleRepository;
+import com.library.repository.UserPaymentRepository;
 import com.library.repository.UserRepository;
 import com.library.service.UserService;
 import org.slf4j.Logger;
@@ -12,12 +15,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+
+    @Autowired
+    private UserPaymentRepository userPaymentRepository;
+
 
     @Autowired
     private UserRepository userRepository;
@@ -75,4 +83,32 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         return userRepository.save(user);
     }
+
+    @Override
+    public void updateUserBilling(UserBilling userBilling, UserPayment userPayment, User user) {
+        userPayment.setUser(user);
+        userPayment.setUserBilling(userBilling);
+        userPayment.setDefaultPayment(true);
+        userBilling.setUserPayment(userPayment);
+        user.getUserPaymentList().add(userPayment);
+        save(user);
+
+    }
+
+    @Override
+    public void setDefaultPayment(long userPaymentId, User user) {
+        List<UserPayment> userPaymentList = (List<UserPayment>) userPaymentRepository.findAll();
+
+        for (UserPayment userPayment : userPaymentList) {
+            if(userPayment.getPaymentId() == userPaymentId) {
+                userPayment.setDefaultPayment(true);
+                userPaymentRepository.save(userPayment);
+            } else {
+                userPayment.setDefaultPayment(false);
+                userPaymentRepository.save(userPayment);
+            }
+        }
+    }
+
+
 }

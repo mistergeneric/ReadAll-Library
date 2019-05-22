@@ -1,5 +1,7 @@
 package com.library.service;
 import com.library.domain.User;
+import com.library.domain.UserBilling;
+import com.library.domain.UserPayment;
 import com.library.domain.security.PasswordResetToken;
 import com.library.domain.security.UserRole;
 
@@ -17,4 +19,9 @@ User findByEmail (String email);
 User createUser (User user, Set<UserRole> userRoles) throws Exception;
 
 User save(User user);
+
+void updateUserBilling(UserBilling userBilling, UserPayment userPayment,User user);
+
+void setDefaultPayment(long DefaultPaymentId, User user);
+
 }
