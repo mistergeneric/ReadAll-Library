@@ -18,6 +18,9 @@
     <script>tinymce.init({selector:'textarea'});</script>
     <link rel="stylesheet" href="css/flaticon.css"/>
     <link rel="stylesheet" href="css/themify-icons.css"/>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/datatables.min.css"/>
     <link th:href="@{/css/fontawesome.css}" rel="stylesheet"/>
@@ -98,7 +101,7 @@
                                 >Library</a
                                 >
                                 <ul  th:with="view=${#httpServletRequest.getServletPath()}"  class="dropdown-menu">
-                                    <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_STANDARD') or hasRole('ROLE_PREMIUM')" th:classappend="${#strings.startsWith(view,'/browse')? 'active' : ''}">
+                                    <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')  or hasRole('ROLE_USER') or hasRole('ROLE_STANDARD') or hasRole('ROLE_PREMIUM') or isAnonymous()" th:classappend="${#strings.startsWith(view,'/browse')? 'active' : ''}">
                                         <a class="nav-link" th:href="@{/browse}">Browse</a>
                                     </li>
                                     <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER') or hasRole('ROLE_STANDARD') or hasRole('ROLE_PREMIUM')" th:classappend="${#strings.startsWith(view,'/contactus')? 'active' : ''}">

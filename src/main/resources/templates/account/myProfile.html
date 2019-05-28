@@ -75,7 +75,7 @@
 
                                     <div class="form-group">
                                         <label for="email">Email Address</label>
-                                        <input type="text" class="form-control" id="email" name="email"
+                                        <input type="email" class="form-control" id="email" name="email"
                                                th:value="${user.email}"/>
 
                                     </div>
@@ -136,7 +136,7 @@
                                                         <a th:href="@{returnBook?bookRef=}+${book.bookRef}">
                                                             <button class="btn btn-success">Return</button>
                                                         </a>
-                                                        <p th:text="'Description: ' + ${#strings.abbreviate(book.description, 500)}"></p>
+                                                        <p th:utext="'Description: ' + ${#strings.abbreviate(book.description, 500)}"></p>
                                                     </div>
 
                                                 </div>
@@ -222,7 +222,7 @@
                                                 </td>
                                                 <td>
                                                     <a th:href="@{/removeCreditCard(id=${userPayment.paymentId})}"><i
-                                                            class="fa fa-times"></i></a>
+                                                            class="fas fa-times"></i></a>
 
                                                 </td>
                                             </tr>
@@ -315,7 +315,7 @@
                                                                required="required"
                                                                placeHolder="Valid Card Number" th:name="cardNumber"
                                                                th:value="${userPayment.cardNumber}"/>
-                                                        <span class="input-group-addon"><i class="fa fa-credit-card"
+                                                        <span class="input-group-addon"><i class="fas fa-credit-card"
                                                                                            aria-hidden="true"></i></span>
                                                     </div>
                                                 </div>

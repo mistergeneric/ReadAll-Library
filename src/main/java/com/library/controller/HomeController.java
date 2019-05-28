@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //this is the home controller which returns the index page
 @Controller
@@ -100,6 +102,7 @@ public class HomeController {
 
                 return "account/myAccount";
             }
+
 
             User user = new User();
             user.setUsername(username);

@@ -14,6 +14,7 @@ public class LoanItem {
     @JoinColumn(name ="book_ref")
     private Book book;
 
+
     @ManyToOne
     @JoinColumn(name = "loan_id")
     private Loan loan;

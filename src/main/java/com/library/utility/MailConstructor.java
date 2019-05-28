@@ -1,5 +1,6 @@
 package com.library.utility;
 
+import com.library.domain.Book;
 import com.library.domain.Loan;
 import com.library.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,21 @@ public class MailConstructor {
     public SimpleMailMessage constructOrderConfirmationEmail(User user, Loan loan)
     {
         String message = "\n Your loan has been successful, your loan reference number is : \n" + loan.getLoanId() + " \n Please return it by: \n" + loan.getDueDate();
+        SimpleMailMessage email = new SimpleMailMessage();
+
+        email.setTo(user.getEmail());
+        email.setSubject("Loan confirmation");
+        email.setText(message);
+        email.setFrom("andrewmcneill1992@gmail.com");
+
+        return email;
+    }
+
+    public SimpleMailMessage lateBookEmail (User user, Loan loan)
+    {
+        String message = "\n Your book is late! : \n" + loan.getLoanId() + " \n Please return it as soon as possible!";
+
+
         SimpleMailMessage email = new SimpleMailMessage();
 
         email.setTo(user.getEmail());

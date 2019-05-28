@@ -46,7 +46,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="newEmail" class="">Email:</label>&nbsp;<span style="color:red;" th:if="${emailExists}">Email already exists.</span>
-                                        <input required="required" type="text" class="form-control" id="newEmail"
+                                        <input required="required" type="email" class="form-control" id="newEmail"
                                                name="email"/>
                                         <p style="color:#828282">Enter your email</p>
                                     </div>
@@ -111,7 +111,7 @@
                                 <form th:action="@{/forgetPassword}">
                                     <div class="form-group">
                                         <label for="email" class="">Email:</label>
-                                        <input required="required" type="text" class="form-control" id="email"
+                                        <input required="required" type="email" class="form-control" id="email"
                                                name="email"/>
                                         <p style="color:#828282">Enter your email</p>
                                     </div>
