@@ -7,6 +7,7 @@ import com.library.domain.User;
 import java.util.List;
 
 public interface BasketService {
-    Basket findUserBasket(User user);
+    List<Basket> findUserBasket(User user);
     Basket save(Basket basket);
+    void deleteByUser(User user);
 }

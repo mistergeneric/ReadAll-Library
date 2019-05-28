@@ -7,9 +7,11 @@ import com.library.service.BasketItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class BasketItemServiceImpl implements BasketItemService {
     @Autowired
     private BasketItemRepository basketItemRepository;
@@ -22,5 +24,10 @@ public class BasketItemServiceImpl implements BasketItemService {
     @Override
     public BasketItem save(BasketItem basketItem) {
         return basketItemRepository.save(basketItem);
+    }
+
+    @Override
+    public void deleteByBasket(Basket basket) {
+        basketItemRepository.deleteByBasket(basket);
     }
 }

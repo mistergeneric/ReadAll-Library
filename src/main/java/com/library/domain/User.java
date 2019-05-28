@@ -30,6 +30,8 @@ public class User implements UserDetails {
     private int numberOfLoans;
     private boolean enabled = true;
 
+
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<UserRole> userRoles = new HashSet<>();
@@ -55,6 +57,10 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    public boolean getEnabled()
+    {
+        return enabled;
+    }
 
     public String getPassword() {
         return password;

@@ -44,7 +44,12 @@
                     <div class="card-group">
                         <div class="card" style="=border: none;">
                             <div class="card-body" style="background-color: #ededed; margin-top: 20px;">
-                                <form th:action="@{/updateUserInfo}" method="post">
+                                <form th:action="@{/updateUserInfo}">
+                                    <div th:if="${noEmail}" class="alert alert-warning">Oops,
+                                        we couldn't send you an email. Your password is:
+                                    <br/>
+                                        <p th:text="${token}"></p>
+                                    </div>
                                     <input type="hidden" name="id" th:value="${user.id}">
                                     <div class="bg-info" th:if="${updateUserInfo}">User info updated</div>
                                     <div class="form-group">
@@ -68,14 +73,6 @@
 
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="currentPassword">Password</label>
-                                        <input type="password" class="form-control" id="currentPassword"
-                                               name="currentPassword" th:value="${currentPassword}"/>
-
-                                    </div>
-                                    <p style="color:darkblue" class="lead">Enter your current password to change the
-                                        email address or password.</p>
                                     <div class="form-group">
                                         <label for="email">Email Address</label>
                                         <input type="text" class="form-control" id="email" name="email"
@@ -166,6 +163,9 @@
                                 <div>
                                     <p><b>Your current account type is: </b></p>
                                     <h5 class="display-4" sec:authorize="hasRole('ROLE_USER')">Free Account</h5>
+                                    <h5 class="display-4" sec:authorize="hasRole('ROLE_STANDARD')">Standard Account</h5>
+                                    <h5 class="display-4" sec:authorize="hasRole('ROLE_PREMIUM')">Premium Account</h5>
+
                                     <h5 class="display-4" sec:authorize="hasRole('ROLE_ADMIN')">Admin Account</h5>
 
                                     <p><b>Would you like to upgrade your account? Please press this button to set up or

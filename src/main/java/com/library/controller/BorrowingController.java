@@ -89,7 +89,7 @@ public class BorrowingController {
      */
 
     @RequestMapping("/borrowItem")
-    public String borrowItem(Model model, @RequestParam("bookRef") int bookRef, Principal principal) {
+    public void borrowItem(Model model, @RequestParam("bookRef") int bookRef, Principal principal) {
 
         /*Stupidly, I didn't realise I could define my own searches through Crud Repo. Therefore, I use find all to pull out
         every record from loanitem, loan, item and book and iterate through them all to find what the app needs to find
@@ -105,15 +105,13 @@ public class BorrowingController {
             Book book = bookService.findOne(bookRef);
             if (book.getStockLevel() == 0) {
                 //if the book is not in stock, it calls the reserve book method from within the current controller
-                return reserveBook(bookRef, model, principal);
-
+                reserveBook(bookRef, model, principal);
             }
             //new item
             Item item = new Item();
 
             //if the user is still got loans available to him (defined by the account level, then this fires off. (else it redirects)
             if (user.getNumberOfLoans() > 0) {
-                user.setNumberOfLoans(user.getNumberOfLoans() - 1);
                 ArrayList<Item> allItems = itemService.findAll();
                 ArrayList<Book> userBooks = new ArrayList<>();
 
@@ -158,7 +156,7 @@ public class BorrowingController {
                 }
                 //if the user already has it borrowed
                 if (userBooks.contains(book)) {
-                    return "library/alreadyBorrowed";
+                    alreadyBorrowed(model);
                 }
                 //below we are just adding everything everything and saving it to the basis as it has passed the crazy checks above
                 Loan loan = new Loan();
@@ -178,12 +176,16 @@ public class BorrowingController {
                 LoanItem loanItem = new LoanItem();
                 loanItem.setBook(book);
 
+                loanItem.setItem(item);
                 loanItem.setLoan(loan);
 
                 loanItemService.save(loanItem);
 
                 book.setStockLevel(book.getStockLevel() - 1);
 
+                book.setNoOfLoans(book.getNoOfLoans() + 1);
+
+                book.setActiveLoans(book.getActiveLoans() +1);
                 bookService.save(book);
 
                 item.setLoaned(true);
@@ -197,15 +199,12 @@ public class BorrowingController {
                 model.addAttribute("user", user);
                 //returning this page if the book is already borrowed
             } else {
-                return "library/alreadyBorrowed";
+                alreadyBorrowed(model);
             }
         }
 
 
 
-
-        //if everything is good, then this page is returned
-        return "library/loanConfirmation";
     }
 
 
@@ -304,8 +303,27 @@ public class BorrowingController {
                 }
             }
         }
+
+        for(Loan x : allLoans)
+        {
+            if(x.getReturnedOn() == null) {
+                if (x.getUser().getId().equals(user.getId())) {
+                    for (LoanItem y : allLoanItems) {
+                        if (x.getLoanId() == y.getLoan().getLoanId()) {
+
+                            if (!userBooks.contains(y.getBook())) {
+                                userBooks.add(y.getBook());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         //increasing stock level as book has been returned
         book.setStockLevel(book.getStockLevel() + 1);
+
+        book.setActiveLoans(book.getActiveLoans() -1);
         bookService.save(book);
 
         userService.save(user);
@@ -400,13 +418,31 @@ public class BorrowingController {
     public String basket(Model model, Principal principal)
     {
         User user = userService.findByUsername(principal.getName());
+        Basket basket = new Basket();
+        List<Basket> baskets = basketService.findUserBasket(user);
 
-        Basket basket = basketService.findUserBasket(user);
-        ArrayList<BasketItem> basketItems = (ArrayList<BasketItem>) basketItemService.findByBasket(basket);
-        for(BasketItem basketItem : basketItems)
+        if(baskets.isEmpty())
         {
-            basket.getBasket().add(basketItem.getBook());
+
+            model.addAttribute("emptyCart", true);
+            return "basket";
         }
+        for(Basket b : baskets)
+        {
+            if(!b.isComplete())
+            {
+                basket = b;
+
+                ArrayList<BasketItem> basketItems = (ArrayList<BasketItem>) basketItemService.findByBasket(basket);
+                for(BasketItem basketItem : basketItems)
+                {
+                    if(!basketItem.isComplete()) {
+                        basket.getBasket().add(basketItem.getBook());
+                    }
+                }
+            }
+        }
+
         model.addAttribute("user", user);
 
         if(basket == null)
@@ -414,6 +450,13 @@ public class BorrowingController {
             model.addAttribute("emptyCart", true);
             return "basket";
         }
+
+        if(basket.getBasket() == null)
+        {
+            model.addAttribute("emptyCart", true);
+            return "basket";
+        }
+
 
         if(basket.getBasket().isEmpty())
         {
@@ -435,15 +478,27 @@ public class BorrowingController {
         Book book = bookService.findOne(bookRef);
 
         if(itemService.availabilityChecker(user, book)) {
-            if (basketService.findUserBasket(user) != null) {
-                basket = basketService.findUserBasket(user);
-            }
-            ArrayList<BasketItem> basketItems = (ArrayList<BasketItem>) basketItemService.findByBasket(basket);
-
-            if(basketItems.contains(book))
+            for(Basket b : basketService.findUserBasket(user))
             {
-                return "library/alreadyBorrowed";
+                if(!b.isComplete())
+                {
+                    basket = b;
+                    ArrayList<BasketItem> basketItems = (ArrayList<BasketItem>) basketItemService.findByBasket(basket);
+                    for(BasketItem bi : basketItems)
+                    {
+                        if(!bi.isComplete()) {
+                            if (bi.getBook() == book) {
+                                return "library/alreadyBorrowed";
+
+                            }
+                        }
+                    }
+
+                }
             }
+
+
+
 
             ArrayList<Book> basketStuff = new ArrayList<>();
             basket.setBasket(basketStuff);
@@ -455,10 +510,10 @@ public class BorrowingController {
             basket.setUser(user);
             model.addAttribute("user", user);
             basketItem.setBasket(basket);
+            basketService.save(basket);
 
 
             basketItemService.save(basketItem);
-            basketService.save(basket);
             model.addAttribute("addedSuccess", true);
 
             //loading all the books from database and attaching it to the model
@@ -471,5 +526,96 @@ public class BorrowingController {
         }
     }
 
+    @RequestMapping("/borrowItems")
+    public String borrowItem(Model model, Principal principal) {
+
+        //TODO Fix the basket
+        User user = userService.findByUsername(principal.getName());
+        Basket basket = new Basket();
+
+        for(Basket b : basketService.findUserBasket(user))
+        {
+            if(!b.isComplete())
+            {
+                basket = b;
+            }
+        }
+        ArrayList<BasketItem> basketItems = (ArrayList<BasketItem>) basketItemService.findByBasket(basket);
+        for(BasketItem basketItem : basketItems)
+        {
+            if(!basketItem.isComplete())
+            {
+                basket.getBasket().add(basketItem.getBook());
+            }
+        }
+
+
+
+        for(Book book : basket.getBasket())
+        {
+            borrowItem(model, book.getBookRef(), principal);
+        }
+
+
+
+        for(BasketItem basketItem : basketItems)
+        {
+            if(!basketItem.isComplete())
+            {
+                basketItem.setComplete(true);
+                basketItemService.save(basketItem);
+            }
+        }
+
+        for(Basket b : basketService.findUserBasket(user))
+        {
+            if(!b.isComplete())
+            {
+                b.setComplete(true);
+                basketService.save(b);
+            }
+        }
+        for(Loan loan : loanService.findAll())
+        {
+            for(LoanItem loanItem : loanItemService.findAll())
+            {
+                if(basket.getBasket().contains(loanItem.getBook())) {
+                    if (loan.getUser() == user && loan.getReturnedOn() == null) {
+                        model.addAttribute(loan);
+                    }
+                }
+            }
+
+        }
+
+        //if everything is good, then this page is returned
+        return "library/loanConfirmation";
+
+    }
+
+    @RequestMapping("/removeFromBasket")
+    public String removeFromBasket(@RequestParam("bookRef") int bookRef, Model model, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        Basket basket = new Basket();
+
+        for(Basket b : basketService.findUserBasket(user))
+        {
+            if(!b.isComplete())
+            {
+                basket = b;
+            }
+        }
+        ArrayList<BasketItem> basketItems = (ArrayList<BasketItem>) basketItemService.findByBasket(basket);
+        for(BasketItem bi : basketItems)
+        {
+            if(!bi.isComplete() && bi.getBook() == bookService.findOne(bookRef))
+            {
+                bi.setComplete(true);
+                basketItemService.save(bi);
+
+            }
+        }
+        return "basket";
+    }
 
 }

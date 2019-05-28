@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 public class BasketItem  {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long basketItemId;
@@ -13,6 +14,8 @@ public class BasketItem  {
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
+
+    private boolean complete;
 
     public long getBasketItemId() {
         return basketItemId;
@@ -37,4 +40,13 @@ public class BasketItem  {
     public void setBook(Book book) {
         this.book = book;
     }
+
+    public boolean isComplete() {
+        return complete;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
+
 }

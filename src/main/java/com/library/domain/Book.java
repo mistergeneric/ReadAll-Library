@@ -22,6 +22,25 @@ public class Book {
     private String format;
     private double cost;
     private boolean active = true;
+    private int noOfLoans;
+
+    private int activeLoans;
+
+    public int getActiveLoans() {
+        return activeLoans;
+    }
+
+    public void setActiveLoans(int activeLoans) {
+        this.activeLoans = activeLoans;
+    }
+
+    public int getNoOfLoans() {
+        return noOfLoans;
+    }
+
+    public void setNoOfLoans(int noOfLoans) {
+        this.noOfLoans = noOfLoans;
+    }
 
     @Column(columnDefinition = "text")
     private String description;

@@ -35,7 +35,7 @@
                        th:href="@{/borrowItems}">Borrow</a>
                 </div>
                 <br/>
-                <div th:if="${emptyCart}" class="alert alert-warning">Oops,
+                <div th:if="${emptyCart}" style="margin-top: 50px;" class="row alert alert-warning">Oops,
                     your cart is empty. Why not check out the library?
                 </div>
                 <div class="row">
@@ -56,7 +56,7 @@
 								${cartItem.getBookRef()}+'.png'"/>
                                 </a>
                                 <a class="btn btn-primary"
-                                   th:href="@{/removeFromBasket}">Remove</a>
+                                   th:href="@{/removeFromBasket?bookRef=}+${cartItem.getBookRef()}">Remove</a>
 
                             </div>
                             <div class="col-md-6">

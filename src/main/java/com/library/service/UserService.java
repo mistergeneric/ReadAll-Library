@@ -5,6 +5,7 @@ import com.library.domain.UserPayment;
 import com.library.domain.security.PasswordResetToken;
 import com.library.domain.security.UserRole;
 
+import java.util.List;
 import java.util.Set;
 
 public interface UserService {
@@ -17,6 +18,8 @@ User findByUsername(String username);
 User findByEmail (String email);
 
 User createUser (User user, Set<UserRole> userRoles) throws Exception;
+
+List<User> findAll();
 
 User save(User user);
 

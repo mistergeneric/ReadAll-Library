@@ -2,6 +2,12 @@ package com.library.controller;
 
 import com.library.domain.Book;
 import com.library.domain.Item;
+import com.library.domain.User;
+import com.library.domain.security.Role;
+import com.library.domain.security.UserRole;
+import com.library.service.RoleService;
+import com.library.service.UserRoleService;
+import com.library.service.UserService;
 import com.library.service.impl.BookServiceImpl;
 import com.library.service.impl.ItemServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +33,15 @@ import java.util.List;
  */
 @Controller
 public class AdminController {
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private UserRoleService userRoleService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * autowired annotation allows spring framework to resolve and use beans outwith the current bean
@@ -67,6 +82,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value="/add", method = RequestMethod.POST)
     public String addBookPost(@ModelAttribute("book") Book book, HttpServletRequest request){
+
         bookService.save(book);
         for(int i=0; book.getStockLevel() > i; i++)
         {
@@ -157,5 +173,90 @@ public class AdminController {
         return "admin/bookInfo";
 
     }
+
+    @RequestMapping("/manageUsers")
+    public String manageUsers(Model model) {
+        List<User> userList = userService.findAll();
+
+        model.addAttribute("userList", userList);
+        return "admin/manageUsers";
+    }
+
+    @RequestMapping("/suspend")
+    public String suspend(Model model, @RequestParam("username") String username)
+    {
+
+
+        User user = userService.findByUsername(username);
+        if(user.getEnabled()) {
+            user.setEnabled(false);
+            userService.save(user);
+
+            List<User> userList = userService.findAll();
+
+            UserRole userRole = userRoleService.findByUser(user);
+
+            Role role = new Role();
+            role.setRoleId(5);
+            user.getUserRoles().clear();
+
+
+            userRole.setRole(role);
+            userRole.setUser(user);
+
+
+            user.getUserRoles().add(userRole);
+
+
+            roleService.save(role);
+            userService.save(user);
+            userRoleService.save(userRole);
+
+
+            model.addAttribute("userList", userList);
+            return "admin/manageUsers";
+        }
+        else{
+            user.setEnabled(true);
+            userService.save(user);
+
+            List<User> userList = userService.findAll();
+
+            UserRole userRole = userRoleService.findByUser(user);
+
+            Role role = new Role();
+            role.setRoleId(1);
+            user.getUserRoles().clear();
+
+
+            userRole.setRole(role);
+            userRole.setUser(user);
+
+
+            user.getUserRoles().add(userRole);
+
+
+            roleService.save(role);
+            userService.save(user);
+            userRoleService.save(userRole);
+
+
+            model.addAttribute("userList", userList);
+            return "admin/manageUsers";
+
+        }
+    }
+
+    @RequestMapping("/bookReport")
+    public String bookReport(Model model){
+        List<Book> bookList = bookService.findAll();
+        model.addAttribute("bookList", bookList);
+
+        return "admin/bookReport";
+    }
+
+
+
+
 
 }

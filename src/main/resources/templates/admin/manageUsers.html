@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header">
+
+
+</head>
+
+<body>
+<!--================ Start Header Menu Area =================-->
+<!--================ End Header Menu Area =================-->
+<div th:replace="common/header :: navbar"></div>
+
+<div></div>
+<div class="container"><div class="row"><h1 class="center-block display-3" style="padding-left:50px; padding-top: 80px">Manage Users:</h1></div>
+    <div class="table-responsive-md">
+        <table id="userListTable" class="table table-hover table-borderless table-striped table-dark">
+            <thead>
+            <tr>
+                <th>UserId</th>
+                <th>Username</th>
+                <th>Enabled</th>
+                <th>Suspend</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-th-each="user : ${userList}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.getEnabled()}"></td>
+
+                <td><a th:href="@{/suspend(username=${user.username})}">suspend</a></td>
+            </tr>
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<!--================ End Testimonial Area =================-->
+
+<div th:replace="common/header :: bottom-stuff"></div>
+<!--================ End footer Area  =================-->
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<div th:replace="common/header :: body-bottom-scripts"></div>
+</body>
+</html>

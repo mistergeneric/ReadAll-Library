@@ -12,12 +12,29 @@
 
 <div></div>
 <div class="container">
-    <div class="row"><h1 class="center-block display-2" style="padding-left:10px; padding-top: 80px">About Us</h1>
+    <div class="row"><h1 class="center-block display-2" style="padding-left:10px; padding-top: 80px">Upgrade Account</h1>
 
         <br/>
-        <p class="info-border">Founded in 1995, ReadAll Library has been at the forefront of new technology since. The business strives
-            to bring books to a young generation by providing exciting, modern services</p>
+        <div class="form-group" style="margin-top: +200px">
+            <form th:action="@{/upgradeAccount}" th:object="${role.roleId}" method="post">
+            <label class="" for="role">Upgrade Your Account</label>
+            <div class=""><select id="role" name="role" class="form-control" th:value="${role.roleId}">
+                <option value="0" disabled="disabled"> Please select an option</option>
+                <option value="1"  th:selected="(${role.roleId}==1)">Free</option>
+                <option value="2" th:selected="(${role.roleId}==2)" >Standard £5.99 a month</option>
+                <option value="3" th:selected="(${role.roleId}==3)" >Premium £9.99 a month</option>
+            </select>
+                <p class="text-danger"> Your payment card will be charged</p>
+                <div th:if="${noPaymentDetails}" class="text-danger">You don't have default payment set up on your account!</div>
+                <div th:if="${nothingSelected}" class="text-danger">Please select an option!</div>
+
+                <button type="submit" class="btn btn-success"></button>
+
+            </div>
+            </form>
+            <span>Upgrade</span>
         <br/>
+        </div>
     </div>
 
 </div>

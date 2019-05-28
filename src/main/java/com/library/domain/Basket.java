@@ -20,6 +20,17 @@ public class Basket {
     private User user;
 
 
+
+    private boolean complete;
+
+    public boolean isComplete() {
+        return complete;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
+    }
+
     public Long getBasketId() {
         return basketId;
     }

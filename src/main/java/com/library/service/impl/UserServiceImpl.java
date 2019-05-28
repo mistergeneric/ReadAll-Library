@@ -80,6 +80,11 @@ public class UserServiceImpl implements UserService {
         return localUser;
     }
 
+    @Override
+    public List<User> findAll() {
+        return (List<User>) userRepository.findAll();
+    }
+
     public User save(User user) {
         return userRepository.save(user);
     }

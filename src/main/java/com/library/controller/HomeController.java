@@ -4,6 +4,7 @@ import com.library.domain.*;
 import com.library.domain.security.PasswordResetToken;
 import com.library.domain.security.Role;
 import com.library.domain.security.UserRole;
+import com.library.repository.RoleRepository;
 import com.library.service.*;
 import com.library.service.impl.*;
 import com.library.utility.MailConstructor;
@@ -47,6 +48,9 @@ public class HomeController {
     private UserSecurityService userSecurityService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private LoanItemService loanItemService;
 
     @Autowired
@@ -57,6 +61,9 @@ public class HomeController {
 
     @Autowired
     private UserPaymentService userPaymentService;
+
+    @Autowired
+    private UserRoleService userRoleService;
 
     @RequestMapping("/")
     public String index() {
@@ -116,31 +123,42 @@ public class HomeController {
             String token = UUID.randomUUID().toString();
             userService.createPasswordResetTokenForUser(user, token);
 
-            String appUrl ="http://" +request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+            String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 
-            SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
+            try {
+                SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
 
-            mailSender.send(email);
+                mailSender.send(email);
+                model.addAttribute("user", user);
 
-            model.addAttribute("user", user);
+                model.addAttribute("emailSent", true);
 
-            model.addAttribute("emailSent", true);
+                return "account/myAccount";
 
-            return "account/myAccount";
+            } catch (Exception ex) {
+                model.addAttribute("user", user);
+
+                model.addAttribute("emailSent", true);
+
+                model.addAttribute("noEmail", true);
+                model.addAttribute("token", token);
+
+
+                return "account/myProfile";
+            }
         }
     }
 
     @RequestMapping("/forgetPassword")
     public String forgetPassword(
-        HttpServletRequest request,
-                @ModelAttribute("email") String mail,
-                        Model model){
+            HttpServletRequest request,
+            @ModelAttribute("email") String mail,
+            Model model) {
         model.addAttribute("classActiveForgotPassword", true);
 
         User user = userService.findByEmail(mail);
 
-        if(user == null)
-        {
+        if (user == null) {
             model.addAttribute("emailNotExist", true);
             return "account/myAccount";
         }
@@ -155,7 +173,7 @@ public class HomeController {
         String token = UUID.randomUUID().toString();
         userService.createPasswordResetTokenForUser(user, token);
 
-        String appUrl ="http://" +request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+        String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 
         SimpleMailMessage newEmail = mailConstructor.constructResetTokenEmail(appUrl, request.getLocale(), token, user, password);
 
@@ -196,8 +214,7 @@ public class HomeController {
     }
 
     @RequestMapping("/myProfile")
-    public String myProfile(Model model, Principal principal)
-    {
+    public String myProfile(Model model, Principal principal) {
 
         String username = principal.getName();
         User user = userService.findByUsername(username);
@@ -215,9 +232,8 @@ public class HomeController {
 
         ArrayList<Book> customerBooks = new ArrayList<>();
 
-        for(Loan x : loans)
-        {
-            if(x.getReturnedOn() == null) {
+        for (Loan x : loans) {
+            if (x.getReturnedOn() == null) {
                 if (x.getUser().getId().equals(user.getId())) {
                     for (LoanItem y : loanItems) {
                         if (x.getLoanId() == y.getLoan().getLoanId()) {
@@ -248,13 +264,13 @@ public class HomeController {
 
 
     @RequestMapping("/aboutus")
-    public String aboutUs(Model model){
+    public String aboutUs(Model model) {
 
         return "aboutus";
     }
 
     @RequestMapping("/contactus")
-    public String contactUs(Model model){
+    public String contactUs(Model model) {
 
         return "contactus";
     }
@@ -279,7 +295,7 @@ public class HomeController {
     @RequestMapping("/addPaymentOption")
     public String addNewCreditCard(
             Model model, Principal principal
-    ){
+    ) {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("user", user);
 
@@ -299,11 +315,10 @@ public class HomeController {
         return "account/myProfile";
     }
 
-    @RequestMapping(value="/addPaymentOption", method = RequestMethod.POST)
+    @RequestMapping(value = "/addPaymentOption", method = RequestMethod.POST)
     public String addPaymentOptionPost(@ModelAttribute("userPayment") UserPayment userPayment,
                                        @ModelAttribute("userBilling") UserBilling userBilling,
-                                       Principal principal, Model model)
-    {
+                                       Principal principal, Model model) {
         User user = userService.findByUsername(principal.getName());
         userService.updateUserBilling(userBilling, userPayment, user);
 
@@ -319,11 +334,11 @@ public class HomeController {
     @RequestMapping("/removeCreditCard")
     public String removeCreditCard(
             @ModelAttribute("id") Long creditCardId, Principal principal, Model model
-    ){
+    ) {
         User user = userService.findByUsername(principal.getName());
         UserPayment userPayment = userPaymentService.findById(creditCardId);
 
-        if(!user.getId().equals(userPayment.getUser().getId())) {
+        if (!user.getId().equals(userPayment.getUser().getId())) {
             return "badRequestPage";
         } else {
             model.addAttribute("user", user);
@@ -338,7 +353,8 @@ public class HomeController {
             return "account/myProfile";
         }
     }
-    @RequestMapping(value="/setDefaultPayment", method=RequestMethod.POST)
+
+    @RequestMapping(value = "/setDefaultPayment", method = RequestMethod.POST)
     public String setDefaultPayment(
             @ModelAttribute("defaultUserPaymentId") Long defaultPaymentId, Principal principal, Model model
     ) {
@@ -354,8 +370,156 @@ public class HomeController {
         return "account/myProfile";
     }
 
+    @RequestMapping("/upgradeAccount")
+    public String upgradeAccount(Principal principal, Model model) {
+        Role role = new Role();
+        role.setRoleId(0);
+
+        role.setName("");
+
+        User user = userService.findByUsername(principal.getName());
+        model.addAttribute("user", user);
+        model.addAttribute("role", role);
+
+        return "account/upgradeAccount";
+    }
 
 
+    @RequestMapping(value = "/upgradeAccount", method = RequestMethod.POST)
+    public String upgradeAccountConfirm(Principal principal, Model model, @RequestParam("role") Role r) {
+        User user = userService.findByUsername(principal.getName());
 
 
+        UserRole userRole = userRoleService.findByUser(user);
+
+
+        if (user.getUserPaymentList().isEmpty()) {
+            model.addAttribute("noPaymentDetails", true);
+            return "account/upgradeAccount";
+        }
+
+        if (r.getRoleId() == 0) {
+            model.addAttribute("nothingSelected", true);
+            return "account/upgradeAccount";
+        }
+
+
+        Role role = new Role();
+        role.setRoleId(r.getRoleId());
+        switch (r.getRoleId()) {
+            case 1:
+                role.setName("ROLE_USER");
+                for (UserRole ur : user.getUserRoles()) {
+                    if (ur.getRole().getRoleId() == 2) {
+                        user.setNumberOfLoans(user.getNumberOfLoans() - 3);
+                    }
+
+
+                    if (ur.getRole().getRoleId() == 3) {
+                        user.setNumberOfLoans(user.getNumberOfLoans() - 6);
+                    }
+                }
+
+                break;
+            case 2:
+                role.setName("ROLE_STANDARD");
+                for (UserRole ur : user.getUserRoles()) {
+
+                    if (ur.getRole().getRoleId() == 1) {
+                        user.setNumberOfLoans(user.getNumberOfLoans() + 3);
+                    }
+
+
+                    if (ur.getRole().getRoleId() == 3) {
+                        user.setNumberOfLoans(user.getNumberOfLoans() - 3);
+                    }
+                }
+                break;
+            case 3:
+                role.setName("ROLE_PREMIUM");
+                for (UserRole ur : user.getUserRoles()) {
+
+                    if (ur.getRole().getRoleId() == 2) {
+                        user.setNumberOfLoans(user.getNumberOfLoans() - 6);
+                    }
+
+
+                    if (ur.getRole().getRoleId() == 3) {
+                        user.setNumberOfLoans(user.getNumberOfLoans() - 3);
+                    }
+                }
+                break;
+        }
+
+
+        user.getUserRoles().clear();
+
+        userRole.setRole(role);
+        userRole.setUser(user);
+
+
+        user.getUserRoles().add(userRole);
+
+
+        roleService.save(role);
+        userService.save(user);
+        userRoleService.save(userRole);
+
+
+        return myProfile(model, principal);
+    }
+
+    @RequestMapping("/updateUserInfo")
+    public String updateUserInfo(HttpServletRequest request, Principal principal, @ModelAttribute("user") User user,
+                                 @ModelAttribute("newPassword") String password, Model model)
+            throws Exception {
+
+        User userLoanFix = userService.findByUsername(principal.getName());
+
+        user.setNumberOfLoans(userLoanFix.getNumberOfLoans());
+        user.setStreet(userLoanFix.getStreet());
+        user.setTown(userLoanFix.getTown());
+        user.setPostcode(userLoanFix.getPostcode());
+
+        String encryptedPassword = SecurityUtility.passwordEncoder().encode(password);
+
+        user.setPassword(encryptedPassword);
+
+        userService.save(user);
+
+
+        ArrayList<Book> customerBooks = new ArrayList<>();
+        ArrayList<Loan> loans = loanService.findAll();
+
+        ArrayList<LoanItem> loanItems = loanItemService.findAll();
+
+        for (Loan x : loans) {
+            if (x.getReturnedOn() == null) {
+                if (x.getUser().getId().equals(user.getId())) {
+                    for (LoanItem y : loanItems) {
+                        if (x.getLoanId() == y.getLoan().getLoanId()) {
+
+                            if (!customerBooks.contains(y.getBook())) {
+                                customerBooks.add(y.getBook());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        model.addAttribute("userPaymentList", user.getUserPaymentList());
+        model.addAttribute("updateUserInfo", true);
+        model.addAttribute("bookList", customerBooks);
+        model.addAttribute("user", user);
+        model.addAttribute("classActiveEdit", true);
+
+
+        return "account/myProfile";
+
+
+    }
 }
+
+

@@ -9,21 +9,28 @@ import com.library.service.BasketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class BasketServiceImpl implements BasketService {
 
     @Autowired
     private BasketRepository basketRepository;
 
     @Override
-    public Basket findUserBasket(User user) {
+    public List<Basket> findUserBasket(User user) {
         return basketRepository.findByUser(user);
     }
 
     @Override
     public Basket save(Basket basket) {
         return basketRepository.save(basket);
+    }
+
+    @Override
+    public void deleteByUser(User user) {
+        basketRepository.deleteByUser(user);
     }
 }

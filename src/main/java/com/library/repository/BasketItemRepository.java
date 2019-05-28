@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface BasketItemRepository extends CrudRepository<BasketItem, Long> {
     List<BasketItem> findByBasket(Basket basket);
+    void deleteByBasket(Basket basket);
 }

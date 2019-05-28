@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header :: common-header">
+
+
+</head>
+
+<body>
+<!--================ Start Header Menu Area =================-->
+<!--================ End Header Menu Area =================-->
+<div th:replace="common/header :: navbar"></div>
+
+<div></div>
+<div class="container"><div class="row"><h1 class="center-block display-3" style="padding-left:50px; padding-top: 80px">Books:</h1></div>
+    <div class="table-responsive-md">
+        <table id="bookListTable" class="table table-hover table-borderless table-striped table-dark">
+            <thead>
+            <tr>
+                <th>Book Ref Number</th>
+                <th>Title</th>
+                <th>Currently Loaned Out Copies</th>
+                <th>Total Copies Loaned</th>
+                <th>Copies in Stock</th>
+                <th>Total Copies</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-th-each="book : ${bookList}">
+                <td th:text="${book.bookRef}"></td>
+                <td><a  th:href="@{/bookInfo(bookRef=${book.bookRef})}"><span th:text="${book.bookTitle}"></span></a></td>
+                <td th:text="${book.activeLoans}"></td>
+                <td th:text="${book.noOfLoans}"></td>
+                <td th:text="${book.stockLevel}"></td>
+                <td th:text="${book.noOfLoans + book.stockLevel}"></td>
+            </tr>
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<!--================ End Testimonial Area =================-->
+
+<div th:replace="common/header :: bottom-stuff"></div>
+<!--================ End footer Area  =================-->
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<div th:replace="common/header :: body-bottom-scripts"></div>
+<script>
+    $(document).ready(function () {
+        $("#bookListTable").DataTable({
+            "lengthMenu" : [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+            "ordering" : false,
+            stateSave : true
+
+        });
+    });
+</script>
+</body>
+</html>
