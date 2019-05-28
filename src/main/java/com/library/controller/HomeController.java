@@ -139,7 +139,7 @@ public class HomeController {
                 model.addAttribute("user", user);
 
                 model.addAttribute("emailSent", true);
-
+                model.addAttribute("classActiveEdit", true);
                 model.addAttribute("noEmail", true);
                 model.addAttribute("token", token);
 

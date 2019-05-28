@@ -78,7 +78,7 @@
 
             <div class="form-group">
                 <label for="noOfPages">* Pages</label>
-                <input type="number" class="form-control" id="noOfPages" th:value="${book.noOfPages}" placeholder="Pages"  name="noOfPages"/>
+                <input type="number" min="0" class="form-control" id="noOfPages" th:value="${book.noOfPages}" placeholder="Pages"  name="noOfPages"/>
                 <span>Number of Pages</span>
 
             </div>
@@ -98,14 +98,14 @@
 
             <div class="form-group">
                 <label for="stockLevel">* Stock Level</label>
-                <input type="number" class="form-control" id="stockLevel" th:value="${book.stockLevel}" placeholder="Stock Level"  name="stockLevel"/>
+                <input type="number" min="0" class="form-control" id="stockLevel" th:value="${book.stockLevel}" placeholder="Stock Level"  name="stockLevel"/>
                 <span>Stock Level</span>
 
             </div>
             <div class="form-group">
                 <span class="input-group-append">£</span>
                 <label for="cost">* cost</label>
-                <input type="number" class="form-control" id="cost" th:value="${book.cost}" placeholder="Cost"  name="Cost"/>
+                <input type="number" min="0" step="0.01" class="form-control" id="cost" th:value="${book.cost}" placeholder="Cost"  name="Cost"/>
                 <span>Cost</span>
 
             </div>

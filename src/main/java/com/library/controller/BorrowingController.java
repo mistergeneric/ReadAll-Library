@@ -615,6 +615,9 @@ public class BorrowingController {
 
             }
         }
+
+        model.addAttribute("cartItemList", basket.getBasket());
+
         return "basket";
     }
 

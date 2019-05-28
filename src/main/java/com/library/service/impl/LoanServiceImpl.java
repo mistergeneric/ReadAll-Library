@@ -27,9 +27,15 @@ public class LoanServiceImpl implements LoanService {
 
     @Override
     public void confirmation(Loan loan, User user) {
-        MailConstructor mailConstructor = new MailConstructor();
-        SimpleMailMessage email = mailConstructor.constructOrderConfirmationEmail(user, loan);
-        mailSender.send(email);
+        try {
+            MailConstructor mailConstructor = new MailConstructor();
+            SimpleMailMessage email = mailConstructor.constructOrderConfirmationEmail(user, loan);
+            mailSender.send(email);
+        }
+        catch(Exception ex)
+        {
+            System.out.println("Oops : EMAIL");
+        }
 
     }
 

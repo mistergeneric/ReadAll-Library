@@ -153,17 +153,32 @@ public class AdminController {
         return "admin/updateBook";
     }
 
+    @RequestMapping(value="/updateBook", method = RequestMethod.POST)
+    public String updateBookPost(@ModelAttribute("book") Book book, HttpServletRequest request) {
+        Book originalBook = bookService.findOne(book.getBookRef());
+        if(book.getStockLevel() > originalBook.getStockLevel() + originalBook.getActiveLoans()) {
+            for (int i = 0; book.getStockLevel() - originalBook.getStockLevel() + originalBook.getActiveLoans() > i; i++) {
+                Item item = new Item();
+                item.setBook(book);
+                itemService.save(item);
+            }
+        }
 
-    /**
-     * This method is for displaying the book info page to the user.
-     * It uses the book reference number to find the book from the database.
-     * It does this by passing the bookref variable into the book service find one method.
-     * It adds the found book to the model by calling the addattribute method and using bookref as the parameter.
-     * It then returns the book info html page
-     * @param bookRef int variable from the previous html page
-     * @param model The Model object allows the back end to add attributes and commands to the front end html page
-     * @return the book info html page
-     */
+        bookService.save(book);
+        return "redirect:bookList";
+
+
+    }
+        /**
+         * This method is for displaying the book info page to the user.
+         * It uses the book reference number to find the book from the database.
+         * It does this by passing the bookref variable into the book service find one method.
+         * It adds the found book to the model by calling the addattribute method and using bookref as the parameter.
+         * It then returns the book info html page
+         * @param bookRef int variable from the previous html page
+         * @param model The Model object allows the back end to add attributes and commands to the front end html page
+         * @return the book info html page
+         */
     @RequestMapping("/bookInfo")
     public String bookInfo(@PathParam("bookRef") int bookRef, Model model){
 
