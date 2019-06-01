@@ -14,5 +14,6 @@ public interface ItemService {
     boolean availabilityChecker(User user, Book book);
     Item findOne(int bookId);
     Item save(Item item);
+    void deleteByBook(Book book);
 
 }

@@ -111,5 +111,11 @@ public class ItemServiceImpl implements ItemService {
         public Item save (Item item){
             return itemRepository.save(item);
         }
+
+        @Override
+        public void deleteByBook(Book book)
+        {
+            itemRepository.deleteByBook(book);
+        }
     }
 

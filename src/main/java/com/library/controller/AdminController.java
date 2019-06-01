@@ -211,7 +211,13 @@ public class AdminController {
         bookService.deleteByBookRef(bookRef);
         List<Book> bookList = bookService.findAll();
         model.addAttribute("bookList", bookList);
-
+        for(Item i : itemService.findAll())
+        {
+            if(i.getBook().getBookRef() == bookRef)
+            {
+                itemService.deleteByBook(book);
+            }
+        }
         return "admin/bookList";
 
     }
@@ -362,55 +368,60 @@ public class AdminController {
 
     }
 
+    @RequestMapping("/createAdmin")
+    public String createAdmin(Model model) {
+        return "admin/createAdmin";
+    }
+
     @RequestMapping(value = "/createAdmin", method = RequestMethod.POST)
     public String newUserPost(HttpServletRequest request, @ModelAttribute("email") String userEmail, @ModelAttribute("username") String username, Model model)
             throws Exception {
 
-            model.addAttribute("classActiveNewAccount", true);
-            model.addAttribute("email", userEmail);
-            model.addAttribute("username", username);
-            if (userService.findByUsername(username) != null) {
-                model.addAttribute("usernameExists", true);
-                return "admin/createAdmin";
-            }
-            if (userService.findByEmail(userEmail) != null) {
-                model.addAttribute("emailExists", true);
+        model.addAttribute("classActiveNewAccount", true);
+        model.addAttribute("email", userEmail);
+        model.addAttribute("username", username);
+        if (userService.findByUsername(username) != null) {
+            model.addAttribute("usernameExists", true);
+            return "admin/createAdmin";
+        }
+        if (userService.findByEmail(userEmail) != null) {
+            model.addAttribute("emailExists", true);
 
-                return "admin/createAdmin";
-            }
+            return "admin/createAdmin";
+        }
 
 
-            User user = new User();
-            user.setUsername(username);
-            user.setEmail(userEmail);
+        User user = new User();
+        user.setUsername(username);
+        user.setEmail(userEmail);
 
-            String password = "admin";
+        String password = "admin";
 
-            String encryptedPassword = SecurityUtility.passwordEncoder().encode(password);
+        String encryptedPassword = SecurityUtility.passwordEncoder().encode(password);
 
-            user.setPassword(encryptedPassword);
+        user.setPassword(encryptedPassword);
 
-            user.setNumberOfLoans(5);
-            Role role = new Role();
-            role.setRoleId(4);
-            role.setName("ROLE_ADMIN");
-            Set<UserRole> userRoles = new HashSet<>();
+        user.setNumberOfLoans(5);
+        Role role = new Role();
+        role.setRoleId(4);
+        role.setName("ROLE_ADMIN");
+        Set<UserRole> userRoles = new HashSet<>();
 
-            userRoles.add(new UserRole(user, role));
-            userService.createUser(user, userRoles);
+        userRoles.add(new UserRole(user, role));
+        userService.createUser(user, userRoles);
 
-            String token = UUID.randomUUID().toString();
-            userService.createPasswordResetTokenForUser(user, token);
+        String token = UUID.randomUUID().toString();
+        userService.createPasswordResetTokenForUser(user, token);
 
-            model.addAttribute("accountCreated", true);
+        model.addAttribute("accountCreated", true);
         List<User> userList = userService.findAll();
 
         model.addAttribute("userList", userList);
 
         return "admin/manageUsers";
 
-        }
-
-
     }
+
+
+}
 
