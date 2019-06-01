@@ -113,7 +113,6 @@ public class BorrowingController {
             //if the user is still got loans available to him (defined by the account level, then this fires off. (else it redirects)
             if (user.getNumberOfLoans() > 0) {
                 ArrayList<Item> allItems = itemService.findAll();
-                ArrayList<Book> userBooks = new ArrayList<>();
 
 
                 //Andrew, in the future yuu may be tempted to 'fix' this. DO NOT TOUCH for it works now and you
@@ -128,70 +127,16 @@ public class BorrowingController {
                     }
                 }
                 //this iteration is to check whether the user has borrowed the book already!
-                for (LoanItem loanItem : loanItems) {
-                    //going through all of the loans
-                    for (Loan loan : loans) {
-                        //going through all of the loanitems and matching it with the parent loan
-                        if (loanItem.getLoan().getLoanId() == loan.getLoanId()) {
-                            //has the book not been returned yet?
-                            if (loan.getReturnedOn() == null) {
-                                //if the loan's user = the current user
-                                if (loan.getUser().getId().equals(user.getId())) {
-                                    for (Item itemi : allItems) {
+                item = bookService.checkBorrowed(item, user, book);
+                ArrayList<Book> userBooks = bookService.getUserBooks(item, user, book);
 
-                                        if (loan.getLoanId() == loanItem.getLoan().getLoanId()) {
 
-                                            userBooks.add(loanItem.getBook());
-                                        }
-                                        //if the item's bookref matches the intended book to loan + the copy is not loaned + the user doesn't already have it loaned
-                                        if (itemi.getBook().getBookRef() == book.getBookRef() && !itemi.isLoaned() && !userBooks.contains(book)) {
-                                            item = itemi;
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
                 //if the user already has it borrowed
                 if (userBooks.contains(book)) {
                     alreadyBorrowed(model);
                 }
                 //below we are just adding everything everything and saving it to the basis as it has passed the crazy checks above
-                Loan loan = new Loan();
-                loan.setUser(user);
-
-
-                Date dt = new Date();
-                Calendar c = Calendar.getInstance();
-                c.setTime(dt);
-                c.add(Calendar.DATE, 5);
-                dt = c.getTime();
-                loan.setDueDate(dt);
-
-
-                loanService.save(loan);
-
-                LoanItem loanItem = new LoanItem();
-                loanItem.setBook(book);
-
-                loanItem.setItem(item);
-                loanItem.setLoan(loan);
-
-                loanItemService.save(loanItem);
-
-                book.setStockLevel(book.getStockLevel() - 1);
-
-                book.setNoOfLoans(book.getNoOfLoans() + 1);
-
-                book.setActiveLoans(book.getActiveLoans() +1);
-                bookService.save(book);
-
-                item.setLoaned(true);
-
-                itemService.save(item);
-                userService.save(user);
+                Loan loan = loanService.makeLoan(item, user, book);
 
                 //adding loan and user to the model for the next html page
                 loanService.confirmation(loan, user);
@@ -218,6 +163,7 @@ public class BorrowingController {
         //loading all the books from database and attaching it to the model
         List<Book> bookList = bookService.findAll();
         model.addAttribute("bookList", bookList);
+        model.addAttribute("activeAll", true);
         return "library/browseLibrary";
     }
 
@@ -398,13 +344,20 @@ public class BorrowingController {
                 }
             }
         }
-        //TODO - if we don't check reservations, 2 people can reserve for same date
+
         Reservation reservation = new Reservation();
         reservation.setReservedBy(user);
         reservation.setReservedFor(reservationDate);
-
+        for(Reservation r : reservationService.findAll())
+        {
+            if(r.getReservedFor().equals(reservation.getReservedFor()) && r.getItem().equals(reservation.getItem()))
+            {
+                reservation.setReservedFor(reservation.addDays(reservation.getReservedFor(), 7));
+            }
+        }
         reservation.setItem(reserveredItem);
 
+        reservation.setComplete(false);
         //saving the reservation to the database
         reservationService.save(reservation);
 
@@ -529,7 +482,6 @@ public class BorrowingController {
     @RequestMapping("/borrowItems")
     public String borrowItem(Model model, Principal principal) {
 
-        //TODO Fix the basket
         User user = userService.findByUsername(principal.getName());
         Basket basket = new Basket();
 

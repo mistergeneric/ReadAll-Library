@@ -20,6 +20,36 @@
         Item added to basket! Browse for more.
     </div>
 
+    <div class="alert alert-info" th:if="${nothingFound}">
+        There was nothing found when you searched, sorry!
+    </div>
+
+
+    <div class="alert alert-info" th:if="${somethingFound}">
+        Search Results:
+    </div>
+
+    <div class="col-xs-3">
+        <h3><label for="category">Category</label></h3>
+        <div class="list-group" id="category">
+            <a th:href="@{/browse}" th:classappend="${activeAll}? 'active'" class="list-group-item">All</a>
+            <a th:href="@{/searchByCategory(category='adventure')}" th:classappend="${activeadventure}? 'active'" class="list-group-item">Adventure</a>
+            <a th:href="@{/searchByCategory(category='biography')}" th:classappend="${activebiography}? 'active'" class="list-group-item">Biography</a>
+            <a th:href="@{/searchByCategory(category='literature')}" th:classappend="${activeliterature}? 'active'" class="list-group-item">Literature</a>
+            <a th:href="@{/searchByCategory(category='crime')}" th:classappend="${activecrime}? 'active'" class="list-group-item">Crime</a>
+            <a th:href="@{/searchByCategory(category='nonfiction')}" th:classappend="${activenonfiction}? 'active'" class="list-group-item">Non-Fiction</a>
+            <a th:href="@{/searchByCategory(category='howto')}" th:classappend="${activehowto}? 'active'" class="list-group-item">How To</a>
+            <a th:href="@{/searchByCategory(category='romance')}" th:classappend="${activeromance}? 'active'" class="list-group-item">Romance</a>
+            <a th:href="@{/searchByCategory(category='scififantasy')}" th:classappend="${activescififantasy}? 'active'" class="list-group-item">Sci-Fi and Fantasy</a>
+
+
+        </div>
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+
     <table border="0" id="bookList">
         <thead>
         <tr>

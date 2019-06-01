@@ -30,13 +30,22 @@ public class User implements UserDetails {
     private int numberOfLoans;
     private boolean enabled = true;
 
+    public Date getLastPaymentDate() {
+        return lastPaymentDate;
+    }
+
+    public void setLastPaymentDate(Date lastPaymentDate) {
+        this.lastPaymentDate = lastPaymentDate;
+    }
+
+    private Date lastPaymentDate;
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<UserRole> userRoles = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserPayment> userPaymentList;
 
 

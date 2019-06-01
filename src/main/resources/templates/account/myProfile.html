@@ -303,7 +303,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="cardHolder">* Card Holder Name:</label>
-                                                    <input type="text" class="form-control" id="cardHolder"
+                                                    <input type="text"  class="form-control" id="cardHolder"
                                                            required="required"
                                                            placeHolder="Card Holder Name" th:name="holderName"
                                                            th:value="${userPayment.holderName}"/>
@@ -311,7 +311,7 @@
                                                 <div class="form-group">
                                                     <label for="cardNumber">* Card Number:</label>
                                                     <div class="input-group">
-                                                        <input type="tel" class="form-control" id="cardNumber"
+                                                        <input minlength="16" pattern="[0-9]{16}" maxlength="16" type="tel" class="form-control" id="cardNumber"
                                                                required="required"
                                                                placeHolder="Valid Card Number" th:name="cardNumber"
                                                                th:value="${userPayment.cardNumber}"/>
@@ -368,7 +368,7 @@
                                             <div class="col-md-5">
                                                 <div class="form-group">
                                                     <label for="cardCVC">CV Code</label>
-                                                    <input id="cardCVC" type="tel" class="form-control" name="cvc"
+                                                    <input id="cardCVC" minlength="3" pattern="[0-9]{3}" maxlength="3" type="tel" class="form-control" name="cvc"
                                                            placeholder="CVC" th:name="cvc" th:value="${userPayment.cvc}" />
                                                 </div>
                                             </div>
@@ -378,8 +378,6 @@
 
                                     </form>
                             </div>
-                            <!--TODO You need to add the rest of the payment details stuff andrew-->
-                            <!--TODO Flesh out each account type -->
 
                         </div>
                     </div>

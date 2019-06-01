@@ -6,4 +6,5 @@ public interface UserPaymentService {
     UserPayment findById(long Id);
 
     void removeById(long Id);
+
 }

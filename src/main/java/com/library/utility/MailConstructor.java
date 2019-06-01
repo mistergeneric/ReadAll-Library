@@ -57,4 +57,60 @@ public class MailConstructor {
 
         return email;
     }
+
+    public SimpleMailMessage noDefaultPayment(User user)
+    {
+        String message = "\n I'm sorry, your payment to ReadAll Library cannot be processed, please pay now or the service will be cancelled in 5 days";
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(user.getEmail());
+        email.setText(message);
+        email.setSubject("Unpaid Membership");
+        email.setFrom("andrewmcneill1992@gmail.com");
+
+        return email;
+    }
+    public SimpleMailMessage noStock(Book book, User user)
+    {
+        String message = "\n We're really sorry, we have not yet received stock of :" + book.getBookTitle() + "\n As such, your reservation has been cancelled. " +
+                "please contact us for more details";
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(user.getEmail());
+        email.setText(message);
+        email.setSubject("Problem With Reservation");
+        email.setFrom("andrewmcneill1992@gmail.com");
+
+        return email;
+    }
+
+    public SimpleMailMessage noLoans(Book book, User user)
+    {
+        String message = "\n We're really sorry, you don't have any loans available left on your membership, your loan has been cancelled";
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(user.getEmail());
+        email.setText(message);
+        email.setSubject("Problem With Reservation");
+        email.setFrom("andrewmcneill1992@gmail.com");
+
+        return email;
+
+    }
+
+    public SimpleMailMessage failedPayment(User user)
+    {
+        String message = "\n I'm sorry, your default card is not a valid credit card, please update your card details or the service will be cancelled in 5 days";
+
+        SimpleMailMessage email = new SimpleMailMessage();
+        email.setTo(user.getEmail());
+        email.setText(message);
+        email.setSubject("Incorrect Card Details");
+        email.setFrom("andrewmcneill1992@gmail.com");
+
+        return email;
+    }
+
+
+
+
 }

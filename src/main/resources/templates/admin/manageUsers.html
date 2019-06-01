@@ -22,6 +22,9 @@
 <div></div>
 <div class="container"><div class="row"><h1 class="center-block display-3" style="padding-left:50px; padding-top: 80px">Manage Users:</h1></div>
     <div class="table-responsive-md">
+        <div class="alert alert-info" th:if="${accountCreated}">
+            The default password is admin for a new admin account, please change it when you sign in
+        </div>
         <table id="userListTable" class="table table-hover table-borderless table-striped table-dark">
             <thead>
             <tr>
@@ -44,6 +47,12 @@
             </tbody>
         </table>
     </div>
+    <div class="row">
+        <a th:href="@{/exportUserReport}"> <button class="btn btn-danger">Generate Report</button></a>
+    </div>
+    <br/>
+    <br/>
+    <br/>
 </div>
 
 

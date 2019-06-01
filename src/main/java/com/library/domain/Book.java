@@ -163,4 +163,5 @@ public class Book {
     public void setBookImage(MultipartFile bookImage) {
         this.bookImage = bookImage;
     }
+
 }

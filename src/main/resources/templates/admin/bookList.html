@@ -54,7 +54,8 @@
             <td th:text="${book.format}"></td>
             <td th:text="${book.cost}"></td>
             <td th:text="${book.active}"></td>
-            <td>delete</td>
+            <td>  <a th:href="@{/deleteBook(bookRef=${book.bookRef})}"><i
+                    class="fas fa-times"></i></a></td>
         </tr>
 
 
@@ -73,15 +74,6 @@
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <div th:replace="common/header :: body-bottom-scripts"></div>
-<script>
-    $(document).ready(function () {
-       $("#bookListTable").DataTable({
-           "lengthMenu" : [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
-           "ordering" : false,
-           stateSave : true
 
-       });
-    });
-</script>
 </body>
 </html>

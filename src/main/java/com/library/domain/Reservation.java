@@ -1,6 +1,7 @@
 package com.library.domain;
 
 import javax.persistence.*;
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity
@@ -11,6 +12,8 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int reservationId;
 
+
+    private boolean isComplete;
 
     private Date reservedFor;
 
@@ -52,5 +55,24 @@ public class Reservation {
 
     public void setReservationId(int reservationId) {
         this.reservationId = reservationId;
+    }
+    public Date addDays(Date date, Integer days) {
+        if(date == null)
+        {
+            date = Calendar.getInstance().getTime();
+            addDays(date, -30);
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_MONTH, days);
+        return cal.getTime();
+    }
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
     }
 }

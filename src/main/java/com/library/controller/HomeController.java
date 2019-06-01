@@ -1,5 +1,6 @@
 package com.library.controller;
 
+import com.library.ScheduledTasks;
 import com.library.domain.*;
 import com.library.domain.security.PasswordResetToken;
 import com.library.domain.security.Role;
@@ -13,6 +14,7 @@ import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -463,7 +465,10 @@ public class HomeController {
 
         user.getUserRoles().add(userRole);
 
-
+        Date today = Calendar.getInstance().getTime();
+        Reservation reservation = new Reservation();
+        Date paymentDate = reservation.addDays(today, - 31);
+        user.setLastPaymentDate(paymentDate);
         roleService.save(role);
         userService.save(user);
         userRoleService.save(userRole);
@@ -473,16 +478,12 @@ public class HomeController {
     }
 
     @RequestMapping("/updateUserInfo")
-    public String updateUserInfo(HttpServletRequest request, Principal principal, @ModelAttribute("user") User user,
+    public String updateUserInfo(HttpServletRequest request, @ModelAttribute("user") User pageUser,
                                  @ModelAttribute("newPassword") String password, Model model)
             throws Exception {
 
-        User userLoanFix = userService.findByUsername(principal.getName());
+        User user = userService.findByUsername(pageUser.getUsername());
 
-        user.setNumberOfLoans(userLoanFix.getNumberOfLoans());
-        user.setStreet(userLoanFix.getStreet());
-        user.setTown(userLoanFix.getTown());
-        user.setPostcode(userLoanFix.getPostcode());
 
         String encryptedPassword = SecurityUtility.passwordEncoder().encode(password);
 
